@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Layanan Produksi Video Sinematik | Anril Film')
+@section('title', 'Layanan Produksi Video Sinematik | CINEMAHTEGRAPHY')
 
 @section('content')
 <section class="bg-[#0b0f19] text-gray-100 min-h-screen pt-32 pb-24">

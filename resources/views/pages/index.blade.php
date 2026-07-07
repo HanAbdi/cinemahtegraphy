@@ -24,15 +24,15 @@
                 Economic.
             </h1>
             <p class="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">
-                Anril Film menghadirkan solusi pembuatan video corporate elegan berstandar industri nasional dengan
+                CINEMAHTEGRAPHY menghadirkan solusi pembuatan video corporate elegan berstandar industri nasional dengan
                 efisiensi biaya optimal.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#portfolio"
+                <a href="{{ route('portfolios.index') }}"
                     class="w-full sm:w-auto bg-amber-500 text-black text-center px-8 py-4 font-bold tracking-wider uppercase text-sm rounded-sm hover:bg-amber-400 transition duration-300 shadow-xl shadow-amber-500/10">
                     <i class="fas fa-play mr-2 text-xs"></i> Lihat Karya Kami
                 </a>
-                <a href="#contact"
+                <a href="{{ route('contact') }}"
                     class="w-full sm:w-auto border border-gray-700 text-white text-center px-8 py-4 font-bold tracking-wider uppercase text-sm rounded-sm hover:bg-white hover:text-black transition duration-300">
                     Minta Penawaran Harga
                 </a>
@@ -60,7 +60,7 @@
                 <h2 class="text-xs uppercase tracking-widest text-amber-500 font-bold mb-3">Featured Showcases</h2>
                 <p class="text-3xl sm:text-4xl font-black text-white uppercase">Karya Pilihan Sinematik</p>
             </div>
-            <a href="#"
+            <a href="{{ route('portfolios.index') }}"
                 class="mt-4 md:mt-0 text-sm font-bold text-amber-500 hover:text-amber-400 group items-center inline-flex">
                 Lihat Semua Portofolio <i
                     class="fas fa-arrow-right ml-2 transform group-hover:translate-x-1 transition"></i>

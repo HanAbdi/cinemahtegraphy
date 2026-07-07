@@ -15,9 +15,11 @@
                         class="{{ Request::is('tentang') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Tentang</a>
                     <a href="{{ route('services') }}"
                         class="{{ Request::is('layanan') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Layanan</a>
-                    <a href="#" class="text-gray-300 hover:text-amber-500 transition duration-300">Portofolio</a>
-                    <a href="#" class="text-gray-300 hover:text-amber-500 transition duration-300">FAQ</a>
-                    <a href="#"
+                    <a href="{{ route('portfolios.index') }}"
+                        class="{{ Request::is('portfolios') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Portofolio</a>
+                    <a href="{{ route('faq') }}"
+                        class="{{ Request::is('faq') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">FAQs</a>
+                    <a href="{{ route('contact') }}"
                         class="bg-amber-500 text-black px-5 py-2.5 rounded-sm font-semibold hover:bg-amber-400 transition duration-300 transform hover:-translate-y-0.5">Hubungi
                         Kami</a>
                 </div>
@@ -29,12 +31,19 @@
             </div>
         </div>
     </div>
-    <div id="mobile-menu" class="hidden md:hidden bg-[#0c111d] border-b border-gray-800 px-4 pt-2 pb-6 space-y-3">
-        <a href="#" class="block text-amber-500 font-medium">Beranda</a>
-        <a href="#" class="block text-gray-300 hover:text-amber-500">Tentang</a>
-        <a href="#" class="block text-gray-300 hover:text-amber-500">Layanan</a>
-        <a href="#" class="block text-gray-300 hover:text-amber-500">Portofolio</a>
-        <a href="#" class="block text-gray-300 hover:text-amber-500">FAQ</a>
-        <a href="#" class="block bg-amber-500 text-black text-center py-2 rounded-sm font-bold">Hubungi Kami</a>
+    <div id="mobile-menu" class="hidden md:hidden bg-[#0c111d] border-b border-gray-800 px-4 pt-2 pb-6 flex flex-col space-y-3">
+        <a href="{{ url('/') }}"
+            class="{{ Request::is('/') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Beranda</a>
+        <a href="{{ route('about') }}"
+            class="{{ Request::is('tentang') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Tentang</a>
+        <a href="{{ route('services') }}"
+            class="{{ Request::is('layanan') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Layanan</a>
+        <a href="{{ route('portfolios.index') }}"
+            class="{{ Request::is('portfolios') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Portofolio</a>
+        <a href="{{ route('faq') }}"
+            class="{{ Request::is('faq') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">FAQs</a>
+        <a href="{{ route('contact') }}"
+            class="bg-amber-500 text-black px-5 py-2.5 rounded-sm font-semibold hover:bg-amber-400 transition duration-300 transform hover:-translate-y-0.5">Hubungi
+            Kami</a>
     </div>
 </nav>

@@ -1,8 +1,8 @@
 <footer class="bg-[#060910] border-t border-gray-900 pt-20 pb-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div>
-            <span class="text-xl font-black tracking-widest text-white block mb-6">ANRIL <span
-                    class="text-amber-500">FILM</span></span>
+            <span class="text-xl font-black tracking-widest text-white block mb-6">CINEMAH<span
+                    class="text-amber-500">TEGRAPHY</span></span>
             <p class="text-sm text-gray-400 font-light leading-relaxed mb-6">
                 Membantu perusahaan mengukir identitas visual murni melalui tayangan sinematik yang bernilai tinggi.
             </p>
@@ -19,7 +19,8 @@
         <div>
             <h4 class="text-sm font-bold uppercase tracking-widest text-amber-500 mb-6">Kontak Kantor</h4>
             <address class="text-sm text-gray-400 font-light not-italic space-y-3">
-                <p><i class="fas fa-map-marker-alt text-amber-500 mr-2.5"></i> Jl. Cakra Sentosa Block z No.3 - Wisma Cakra. Kel. Limo - Kec Limo - Cinere Depok</p>
+                <p><i class="fas fa-map-marker-alt text-amber-500 mr-2.5"></i> Jl. Cakra Sentosa Block z No.3 - Wisma
+                    Cakra. Kel. Limo - Kec Limo - Cinere Depok</p>
                 <p><i class="fas fa-envelope text-amber-500 mr-2.5"></i> info@cinemahtegraphy.com</p>
                 <p><i class="fas fa-phone text-amber-500 mr-2.5"></i> (+62) 123-456-789</p>
             </address>
