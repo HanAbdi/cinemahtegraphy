@@ -31,47 +31,13 @@ Route::get('/', function () {
         ]
     ];
 
-    $clients = [
-        ['name' => 'Klien Mitra 1', 'logo' => 'logo-1.png'],
-        ['name' => 'Klien Mitra 2', 'logo' => 'logo-2.png'],
-        ['name' => 'Klien Mitra 3', 'logo' => 'logo-3.png'],
-    ];
+    $clients = \App\Models\ClientLogo::orderBy('created_at', 'asc')->get();
 
     return view('pages.index', compact('portfolios', 'clients'));
 });
 
 Route::get('/portfolio/{id}', function ($id) {
-    $allPortfolios = [
-        1 => [
-            'title' => 'Video Company Profile PT Indonesia Xinhai Steel Structure',
-            'category' => 'Corporate Video',
-            'client' => 'PT Indonesia Xinhai Steel Structure',
-            'year' => '2025',
-            'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            'description' => 'Video company profile untuk PT Indonesia Xinhai Steel Structure, menampilkan keunggulan, workshop, alur kerja, dan layanan manufaktur struktur baja struktural perusahaan berskala internasional.',
-            'service_type' => 'Full Video Production + FPV Drone Shoot'
-        ],
-        2 => [
-            'title' => 'Majestic Cruise Raja Ampat - Tourism Promotional Video',
-            'category' => 'Commercial Video',
-            'client' => 'Majestic Cruise Tour',
-            'year' => '2026',
-            'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            'description' => 'Video promosi pariwisata untuk Majestic Cruise di Raja Ampat, menampilkan keindahan alam bawah laut, fasilitas kapal pesiar mewah, dan pengalaman wisata eksklusif.',
-            'service_type' => 'Commercial Ad Production + Underwater Shooting'
-        ],
-        3 => [
-            'title' => 'Majestic Cruise Raja Ampat - Tourism Promotional Video',
-            'category' => 'Commercial Video',
-            'client' => 'Majestic Cruise Tour',
-            'year' => '2026',
-            'video_url' => 'https://www.youtube.com/embed/dQw4w9WgXcQ',
-            'description' => 'Video promosi pariwisata untuk Majestic Cruise di Raja Ampat, menampilkan keindahan alam bawah laut, fasilitas kapal pesiar mewah, dan pengalaman wisata eksklusif.',
-            'service_type' => 'Commercial Ad Production + Underwater Shooting'
-        ]
-    ];
-
-    $portfolio = $allPortfolios[$id] ?? abort(404);
+    $portfolio = \App\Models\Portfolio::findOrFail($id);
 
     return view('pages.portfolio-detail', compact('portfolio'));
 })->name('portfolio.detail');
@@ -134,57 +100,7 @@ Route::get('/layanan', function () {
 
 Route::get('/portfolios', function () {
     // Array Master Portofolio Lengkap untuk Halaman Kumpulan Portofolio
-    $allPortfolios = [
-        [
-            'id' => 1,
-            'title' => 'Video Company Profile PT Indonesia Xinhai Steel Structure',
-            'category' => 'Corporate Video',
-            'thumbnail' => 'thumb-1.jpg',
-            'description' => 'Video company profile untuk PT Indonesia Xinhai Steel Structure, menampilkan keunggulan dan layanan perusahaan.',
-            'is_national_project' => true
-        ],
-        [
-            'id' => 2,
-            'title' => 'Majestic Cruise Raja Ampat - Tourism Promotional Video',
-            'category' => 'Commercial Video',
-            'thumbnail' => 'thumb-2.jpg',
-            'description' => 'Video promosi pariwisata untuk Majestic Cruise di Raja Ampat, menampilkan keindahan alam dan pengalaman wisata.',
-            'is_national_project' => false
-        ],
-        [
-            'id' => 3,
-            'title' => 'Pertamina Hulu Energi - Advanced Aerial Survey',
-            'category' => 'Drone FPV',
-            'thumbnail' => 'thumb-1.jpg', // Pake aset gambar lo yang ada aja bro
-            'description' => 'Eksplorasi visual area kilang minyak lepas pantai menggunakan manuver Drone FPV Oneshot berkecepatan tinggi.',
-            'is_national_project' => true
-        ],
-        [
-            'id' => 4,
-            'title' => 'Unilever – Glow & Lovely Corporate Campaign',
-            'category' => 'Corporate Video',
-            'thumbnail' => 'thumb-2.jpg',
-            'description' => 'Dokumentasi kegiatan internal corporate social responsibility (CSR) Unilever Indonesia dengan pendekatan emosional.',
-            'is_national_project' => false
-        ],
-        [
-            'id' => 5,
-            'title' => 'Sea Safari Bandaneira – Deep Sea Documentary',
-            'category' => 'Commercial Video',
-            'thumbnail' => 'thumb-1.jpg',
-            'description' => 'Video cinematic campaign untuk mempromosikan rute liveaboard eksklusif pesona laut Banda Neira.',
-            'is_national_project' => false
-        ],
-        [
-            'id' => 6,
-            'title' => 'Kawasan Industri Greenland – Industrial Drone Cinematic',
-            'category' => 'Drone FPV',
-            'thumbnail' => 'thumb-2.jpg',
-            'description' => 'Pengambilan gambar dramatis tanpa putus untuk memperlihatkan skala infrastruktur gudang manufaktur modern.',
-            'is_national_project' => true
-        ]
-    ];
-
+    $allPortfolios = \App\Models\Portfolio::orderBy('created_at', 'desc')->get();
     return view('pages.portfolios', compact('allPortfolios'));
 })->name('portfolios.index');
 
@@ -219,6 +135,62 @@ Route::get('/faq', function () {
 Route::get('/kontak', function () {
     return view('pages.contact');
 })->name('contact');
+
+Route::post('/kontak', function (Illuminate\Http\Request $request) {
+    // Honeypot check
+    if ($request->filled('website_url')) {
+        return back(); // Silently ignore bot
+    }
+
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email|max:255',
+        'phone' => 'required|string|max:20',
+        'subject' => 'required|string|max:255',
+        'message' => 'required|string|max:2000',
+    ]);
+
+    \App\Models\QuoteRequest::create([
+        'name' => strip_tags($validated['name']),
+        'email' => strip_tags($validated['email']),
+        'phone' => strip_tags($validated['phone']),
+        'service_interested' => strip_tags($validated['subject']),
+        'message' => strip_tags($validated['message']),
+        'status' => 'new',
+    ]);
+
+    return back()->with('success', 'Formulir berhasil dikirim! Tim kami akan segera menghubungi Anda.');
+})->name('contact.submit')->middleware('throttle:3,1');
+
+Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', function () {
+        $todayVisitors = \App\Models\VisitorLog::where('visited_date', now()->toDateString())->count();
+        $totalVisitors = \App\Models\VisitorLog::count();
+        $totalPortfolios = \App\Models\Portfolio::count();
+        $newQuotes = \App\Models\QuoteRequest::where('status', 'new')->count();
+        $activeChats = \App\Models\ChatRoom::where('is_active', true)->count();
+        
+        $recentQuotes = \App\Models\QuoteRequest::latest()->take(5)->get();
+        $recentChats = \App\Models\ChatRoom::with(['messages' => function($q) {
+            $q->latest()->limit(1);
+        }])->latest('updated_at')->take(3)->get();
+
+        return view('dashboard', compact(
+            'todayVisitors', 'totalVisitors', 'totalPortfolios',
+            'newQuotes', 'activeChats', 'recentQuotes', 'recentChats'
+        ));
+    })->name('dashboard');
+
+    Route::get('/portfolios', \App\Livewire\PortfolioManager::class)->name('portfolios.index')->middleware('permission:portofolio');
+    Route::get('/portfolios/create', \App\Livewire\PortfolioForm::class)->name('portfolios.create')->middleware('permission:portofolio');
+    Route::get('/portfolios/{id}/edit', \App\Livewire\PortfolioForm::class)->name('portfolios.edit')->middleware('permission:portofolio');
+    Route::get('/quotes', \App\Livewire\QuoteRequestManager::class)->name('quotes.index')->middleware('permission:penawaran');
+    Route::get('/chat', \App\Livewire\AdminChatManager::class)->name('chat')->middleware('permission:live_chat');
+    Route::get('/client-logos', \App\Livewire\ClientLogoManager::class)->name('client-logos.index')->middleware('permission:mitra_kerja');
+    
+    // Account Management (Super Admin only - using a specific role check)
+    Route::get('/accounts', \App\Livewire\AccountManager::class)->name('accounts.index')->middleware('permission:superadmin_only');
+});
 
 // Jalur login admin default bawaan Breeze biarkan tetap utuh di bawah ini
 require __DIR__.'/auth.php';

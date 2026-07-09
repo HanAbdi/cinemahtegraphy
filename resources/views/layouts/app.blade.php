@@ -8,6 +8,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
         body {
@@ -40,6 +41,27 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #f59e0b;
         }
+
+        .client-logo-filter {
+            filter: brightness(0) invert(1);
+            opacity: 0.5;
+            transition: all 0.3s ease;
+        }
+        
+        .client-logo-filter:hover {
+            filter: none;
+            opacity: 1;
+        }
+
+        @keyframes marquee-ltr {
+            0% { transform: translateX(-50%); }
+            100% { transform: translateX(0%); }
+        }
+
+        .animate-marquee-ltr {
+            animation: marquee-ltr 40s linear infinite;
+            will-change: transform;
+        }
     </style>
     @stack('styles')
 </head>
@@ -53,6 +75,8 @@
     </main>
 
     @include('partials.footer')
+
+    <livewire:visitor-chat-widget />
 
     @stack('scripts')
 </body>

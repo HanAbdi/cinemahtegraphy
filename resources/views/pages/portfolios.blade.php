@@ -35,15 +35,20 @@
 
         <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($allPortfolios as $item)
-                <article class="portfolio-item group bg-[#0f1524] border border-gray-900 rounded-sm overflow-hidden hover:border-gray-800 transition duration-300 flex flex-col h-full shadow-lg" data-category="{{ $item['category'] }}">
+                <article class="portfolio-item group bg-[#0f1524] border border-gray-900 rounded-sm overflow-hidden hover:border-gray-800 transition duration-300 flex flex-col h-full shadow-lg" data-category="{{ $item->category }}">
                     
                     <div class="relative aspect-video bg-black overflow-hidden">
-                        <img src="{{ asset('assets/img/' . $item['thumbnail']) }}" alt="{{ $item['title'] }}"
+                        <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('assets/img/thumb-1.jpg') }}" alt="{{ $item->title }}"
                             class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
 
-                        @if($item['is_national_project'])
-                            <span class="absolute top-4 left-4 bg-amber-500 text-black font-black text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-xs shadow-md z-10">
-                                <i class="fas fa-star text-[9px] mr-1"></i> Proyek Nasional
+                        @if($item->project_scope)
+                            <span class="absolute top-4 left-4 {{ $item->tag_scheme === 'B' ? 'bg-blue-500 text-white' : 'bg-amber-500 text-black' }} font-black text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-xs shadow-md z-10">
+                                @if($item->tag_scheme === 'B')
+                                    <i class="fas fa-globe text-[9px] mr-1"></i>
+                                @else
+                                    <i class="fas fa-star text-[9px] mr-1"></i>
+                                @endif
+                                {{ $item->project_scope }}
                             </span>
                         @endif
 
@@ -56,15 +61,15 @@
 
                     <div class="p-6 flex flex-col flex-grow">
                         <span class="text-[11px] uppercase tracking-widest text-amber-500 font-bold mb-2 block">
-                            {{ $item['category'] }}
+                            {{ $item->category }}
                         </span>
                         <h3 class="text-lg font-bold text-white mb-3 line-clamp-1 group-hover:text-amber-400 transition">
-                            {{ $item['title'] }}
+                            {{ $item->title }}
                         </h3>
                         <p class="text-sm text-gray-400 line-clamp-2 font-light leading-relaxed mb-4">
-                            {{ $item['description'] }}
+                            {{ Str::limit(strip_tags($item->description), 100) }}
                         </p>
-                        <a href="{{ url('/portfolio/' . $item['id']) }}" class="mt-auto text-xs font-semibold uppercase tracking-wider text-gray-300 hover:text-white border-b border-gray-800 hover:border-amber-500 pb-1 self-start transition duration-200">
+                        <a href="{{ url('/portfolio/' . $item->id) }}" class="mt-auto text-xs font-semibold uppercase tracking-wider text-gray-300 hover:text-white border-b border-gray-800 hover:border-amber-500 pb-1 self-start transition duration-200">
                             Detail Proyek <i class="fas fa-chevron-right text-[10px] ml-1"></i>
                         </a>
                     </div>

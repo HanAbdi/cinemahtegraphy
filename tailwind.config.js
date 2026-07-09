@@ -14,6 +14,15 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            keyframes: {
+                marquee: {
+                    '0%': { transform: 'translateX(-100%)' },
+                    '100%': { transform: 'translateX(0%)' },
+                }
+            },
+            animation: {
+                marquee: 'marquee 25s linear infinite',
+            }
         },
     },
 

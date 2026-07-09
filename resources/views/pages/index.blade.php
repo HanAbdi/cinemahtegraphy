@@ -40,17 +40,53 @@
         </div>
     </header>
 
-    <section class="py-12 bg-[#090d16] border-y border-gray-900">
-        <div class="max-w-7xl mx-auto px-4 text-center">
+    <section class="py-12 bg-[#090d16] border-y border-gray-900 overflow-hidden">
+        <div class="max-w-7xl mx-auto text-center">
             <p class="text-xs font-semibold tracking-widest text-gray-500 uppercase mb-8">
                 Dipercaya oleh Berbagai Perusahaan Terkemuka
             </p>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 items-center justify-items-center opacity-60">
-                @foreach($clients as $client)
-                    <img src="{{ asset('assets/img/' . $client['logo']) }}" alt="{{ $client['name'] }}"
-                        class="h-10 object-contain grayscale hover:grayscale-0 transition duration-300 filter brightness-200">
-                @endforeach
-            </div>
+            
+            @if($clients->count() > 6)
+                <!-- Marquee Container (Sliding Left to Right) -->
+                <div class="relative overflow-hidden py-4 w-full group">
+                    <div class="flex w-max animate-marquee-ltr group-hover:[animation-play-state:paused]">
+                        <!-- Set 1 -->
+                        @foreach($clients as $client)
+                            <div class="flex-none w-40 sm:w-56 flex justify-center items-center px-4 sm:px-8">
+                                <img src="{{ Storage::url($client->logo_path) }}" alt="{{ $client->name }}" class="h-10 object-contain client-logo-filter">
+                            </div>
+                        @endforeach
+                        <!-- Set 2 -->
+                        @foreach($clients as $client)
+                            <div class="flex-none w-40 sm:w-56 flex justify-center items-center px-4 sm:px-8">
+                                <img src="{{ Storage::url($client->logo_path) }}" alt="{{ $client->name }}" class="h-10 object-contain client-logo-filter">
+                            </div>
+                        @endforeach
+                        <!-- Set 3 -->
+                        @foreach($clients as $client)
+                            <div class="flex-none w-40 sm:w-56 flex justify-center items-center px-4 sm:px-8">
+                                <img src="{{ Storage::url($client->logo_path) }}" alt="{{ $client->name }}" class="h-10 object-contain client-logo-filter">
+                            </div>
+                        @endforeach
+                        <!-- Set 4 -->
+                        @foreach($clients as $client)
+                            <div class="flex-none w-40 sm:w-56 flex justify-center items-center px-4 sm:px-8">
+                                <img src="{{ Storage::url($client->logo_path) }}" alt="{{ $client->name }}" class="h-10 object-contain client-logo-filter">
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+            @else
+                <!-- Normal Grid if few logos (Rata Kanan Kiri) -->
+                <div class="flex flex-wrap justify-evenly items-center px-4 py-4 w-full">
+                    @forelse($clients as $client)
+                        <img src="{{ Storage::url($client->logo_path) }}" alt="{{ $client->name }}"
+                            class="h-10 object-contain client-logo-filter">
+                    @empty
+                        <p class="text-gray-600 text-sm italic">Belum ada logo klien yang ditambahkan.</p>
+                    @endforelse
+                </div>
+            @endif
         </div>
     </section>
 

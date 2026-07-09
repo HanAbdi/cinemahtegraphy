@@ -27,8 +27,20 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
+        
+        $user = $request->user();
+        $user->last_login_at = now();
+        $user->save();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        \App\Models\ActivityLog::create([
+            'user_id' => $user->id,
+            'action' => 'login',
+            'model_type' => 'User',
+            'model_id' => $user->id,
+            'description' => 'Login ke sistem',
+        ]);
+
+        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 
     /**

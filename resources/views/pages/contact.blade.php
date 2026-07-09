@@ -81,8 +81,18 @@
                     <p class="text-xs text-gray-400 font-light mb-8 border-b border-gray-800 pb-4">Silakan isi formulir di
                         bawah ini dengan lengkap untuk mendapatkan kalkulasi estimasi anggaran.</p>
 
-                    <form action="#" method="POST" class="space-y-6">
+                    @if(session('success'))
+                        <div class="bg-green-500/10 border border-green-500/20 text-green-400 px-4 py-3 rounded-sm mb-6 flex items-center gap-3">
+                            <i class="fas fa-check-circle"></i>
+                            <span class="text-sm">{{ session('success') }}</span>
+                        </div>
+                    @endif
+
+                    <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6">
                         @csrf
+                        <!-- Honeypot Field -->
+                        <input type="text" name="website_url" class="absolute opacity-0 -z-10" tabindex="-1" autocomplete="off">
+                        
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                             <div class="space-y-2">
                                 <label for="name" class="text-xs uppercase font-semibold text-gray-400 tracking-wider">Nama

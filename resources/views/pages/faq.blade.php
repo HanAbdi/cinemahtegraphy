@@ -44,8 +44,8 @@
                 <h3 class="text-base sm:text-lg font-bold text-white uppercase tracking-wider">Pertanyaan Anda Belum Terjawab?</h3>
                 <p class="text-xs sm:text-sm text-gray-400 font-light">Hubungi tim administrasi kami secara langsung untuk konsultasi kebutuhan kustom video Anda.</p>
             </div>
-            <a href="{{ url('/#contact') }}" class="inline-block whitespace-nowrap bg-amber-500 text-black font-bold uppercase tracking-wider text-xs px-6 py-3.5 rounded-sm hover:bg-amber-400 transition duration-300 shadow-md">
-                <i class="fab fa-whatsapp mr-2 text-sm"></i> Hubungi Kami
+            <a href="{{ route('contact') }}" class="inline-block whitespace-nowrap bg-amber-500 text-black font-bold uppercase tracking-wider text-xs px-6 py-3.5 rounded-sm hover:bg-amber-400 transition duration-300 shadow-md">
+                <i class="fas fa-paper-plane mr-2 text-sm"></i> Hubungi Kami
             </a>
         </div>
 
