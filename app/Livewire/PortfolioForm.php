@@ -50,7 +50,7 @@ class PortfolioForm extends Component
             "year" => "required|integer",
             "description" => "required|string",
             "service_type" => "required|string|max:255",
-            "image" => $this->portfolio_id ? "nullable|image|max:2048" : "required|image|max:2048",
+            "image" => $this->portfolio_id ? "nullable|image" : "required|image",
             "project_scope" => "nullable|string|max:20",
         ]);
 
@@ -59,7 +59,33 @@ class PortfolioForm extends Component
             if ($this->old_image && Storage::disk("public")->exists($this->old_image)) {
                 Storage::disk("public")->delete($this->old_image);
             }
-            $imagePath = $this->image->store("portfolios", "public");
+            
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $img = $manager->read($this->image->getRealPath());
+            
+            $quality = 90;
+            $encoded = $img->toWebp($quality);
+            
+            // Loop to compress if size > 2MB (2000000 bytes)
+            while (strlen($encoded->toString()) > 2000000 && $quality > 10) {
+                $quality -= 10;
+                $encoded = $img->toWebp($quality);
+            }
+            
+            // If still over 2MB, resize it down to max width 1920
+            if (strlen($encoded->toString()) > 2000000) {
+                $img->scaleDown(width: 1920);
+                $quality = 80;
+                $encoded = $img->toWebp($quality);
+                while (strlen($encoded->toString()) > 2000000 && $quality > 10) {
+                    $quality -= 10;
+                    $encoded = $img->toWebp($quality);
+                }
+            }
+
+            $filename = 'portfolios/' . Str::uuid() . '.webp';
+            Storage::disk("public")->put($filename, $encoded->toString());
+            $imagePath = $filename;
         }
 
         $tagsArray = $this->tags ? array_map("trim", explode(",", $this->tags)) : [];

@@ -4,32 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     
-    $portfolios = [
-        [
-            'id' => 1,
-            'title' => 'Video Company Profile PT Indonesia Xinhai Steel Structure',
-            'category' => 'Corporate Video',
-            'thumbnail' => 'thumb-1.jpg',
-            'description' => 'Video company profile untuk PT Indonesia Xinhai Steel Structure, menampilkan keunggulan dan layanan perusahaan.',
-            'is_national_project' => true
-        ],
-        [
-            'id' => 2,
-            'title' => 'Majestic Cruise Raja Ampat - Tourism Promotional Video',
-            'category' => 'Commercial Video',
-            'thumbnail' => 'thumb-2.jpg',
-            'description' => 'Video promosi pariwisata untuk Majestic Cruise di Raja Ampat, menampilkan keindahan alam dan pengalaman wisata.',
-            'is_national_project' => false
-        ],
-        [
-            'id' => 3,
-            'title' => 'Majestic Cruise Raja Ampat - Tourism Promotional Video',
-            'category' => 'Commercial Video',
-            'thumbnail' => 'thumb-3.jpg',
-            'description' => 'Video promosi pariwisata untuk Majestic Cruise di Raja Ampat, menampilkan keindahan alam dan pengalaman wisata.',
-            'is_national_project' => false
-        ]
-    ];
+    $portfolios = \App\Models\Portfolio::orderBy('created_at', 'desc')->take(3)->get();
 
     $clients = \App\Models\ClientLogo::orderBy('created_at', 'asc')->get();
 

@@ -108,10 +108,16 @@
                 <article
                     class="group bg-[#0f1524] border border-gray-900 rounded-sm overflow-hidden hover:border-gray-800 transition duration-300 flex flex-col h-full shadow-lg">
                     <div class="relative aspect-video bg-black overflow-hidden">
-                        <img src="{{ asset('assets/img/' . $item['thumbnail']) }}" alt="{{ $item['title'] }}"
-                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
+                        @if($item->image_path)
+                            <img src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center bg-gray-900">
+                                <i class="fas fa-film text-4xl text-gray-700"></i>
+                            </div>
+                        @endif
 
-                        @if($item['is_national_project'])
+                        @if($item->project_scope === 'Nasional')
                             <span
                                 class="absolute top-4 left-4 bg-amber-500 text-black font-black text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-xs shadow-md">
                                 <i class="fas fa-star text-[9px] mr-1"></i> Proyek Nasional
@@ -129,15 +135,15 @@
 
                     <div class="p-6 flex flex-col flex-grow">
                         <span class="text-[11px] uppercase tracking-widest text-amber-500 font-bold mb-2 block">
-                            {{ $item['category'] }}
+                            {{ $item->category }}
                         </span>
                         <h3 class="text-lg font-bold text-white mb-3 line-clamp-1 group-hover:text-amber-400 transition">
-                            {{ $item['title'] }}
+                            {{ $item->title }}
                         </h3>
                         <p class="text-sm text-gray-400 line-clamp-2 font-light leading-relaxed mb-4">
-                            {{ $item['description'] }}
+                            {{ strip_tags($item->description) }}
                         </p>
-                        <a href="{{ url('/portfolio/' . $item['id']) }}"
+                        <a href="{{ route('portfolio.detail', $item->id) }}"
                             class="mt-auto text-xs font-semibold uppercase tracking-wider text-gray-300 hover:text-white border-b border-gray-800 hover:border-amber-500 pb-1 self-start transition duration-200">
                             Detail Proyek <i class="fas fa-chevron-right text-[10px] ml-1"></i>
                         </a>
