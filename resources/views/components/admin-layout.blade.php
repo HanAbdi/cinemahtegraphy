@@ -87,6 +87,17 @@
 
                 @if($isSuper || in_array('penawaran', $perms))
                 @livewire('admin-notification-penawaran', key('badge-penawaran'))
+                
+                <div class="pl-4 space-y-1 mt-1 mb-2">
+                    <a href="{{ route('admin.projects.kanban') }}" class="flex items-center px-4 py-2 text-xs font-medium rounded-lg {{ request()->routeIs('admin.projects.kanban') ? 'bg-amber-500/20 text-amber-500' : 'text-gray-400 hover:text-white transition-colors' }}">
+                        <i class="fas fa-columns w-5"></i>
+                        Kanban Proyek
+                    </a>
+                    <a href="{{ route('admin.projects.calendar') }}" class="flex items-center px-4 py-2 text-xs font-medium rounded-lg {{ request()->routeIs('admin.projects.calendar') ? 'bg-amber-500/20 text-amber-500' : 'text-gray-400 hover:text-white transition-colors' }}">
+                        <i class="fas fa-calendar-alt w-5"></i>
+                        Kalender Jadwal
+                    </a>
+                </div>
                 @endif
 
                 @if($isSuper || in_array('mitra_kerja', $perms))

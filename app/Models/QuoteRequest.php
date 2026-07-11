@@ -15,4 +15,9 @@ class QuoteRequest extends Model
         'is_archived' => 'boolean',
         'read_at' => 'datetime',
     ];
+
+    public function project()
+    {
+        return $this->hasOne(Project::class);
+    }
 }

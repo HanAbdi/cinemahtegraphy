@@ -163,6 +163,10 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/chat', \App\Livewire\AdminChatManager::class)->name('chat')->middleware('permission:live_chat');
     Route::get('/client-logos', \App\Livewire\ClientLogoManager::class)->name('client-logos.index')->middleware('permission:mitra_kerja');
     
+    // CRM / Projects Workflow
+    Route::get('/projects/kanban', \App\Livewire\ProjectKanban::class)->name('projects.kanban')->middleware('permission:penawaran');
+    Route::get('/projects/calendar', \App\Livewire\ProjectCalendar::class)->name('projects.calendar')->middleware('permission:penawaran');
+
     // Account Management (Super Admin only - using a specific role check)
     Route::get('/accounts', \App\Livewire\AccountManager::class)->name('accounts.index')->middleware('permission:superadmin_only');
 });

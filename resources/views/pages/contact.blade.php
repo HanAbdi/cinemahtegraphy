@@ -115,7 +115,7 @@
                                 <label for="phone"
                                     class="text-xs uppercase font-semibold text-gray-400 tracking-wider">Nomor Handphone /
                                     WA</label>
-                                <input type="tel" id="phone" name="phone" required placeholder="Contoh: 08123456789"
+                                <input type="tel" id="phone" name="phone" required placeholder="Contoh: 628123456789"
                                     class="w-full bg-[#0c111d] border border-gray-800/80 rounded-sm px-4 py-3 text-sm text-gray-100 placeholder-gray-600 focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition duration-300">
                             </div>
                             <div class="space-y-2">
