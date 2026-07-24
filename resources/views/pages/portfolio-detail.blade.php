@@ -61,7 +61,7 @@
                     <p class="text-sm font-semibold text-white">{{ $portfolio->year }}</p>
                 </div>
                 <div>
-                    <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Cakupan Layanan</h3>
+                    <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Cakupan Produk</h3>
                     <p class="text-sm font-semibold text-amber-500">{{ $portfolio->service_type }}</p>
                 </div>
                 

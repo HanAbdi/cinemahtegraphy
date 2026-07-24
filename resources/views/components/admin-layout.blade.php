@@ -24,12 +24,15 @@
             width: 8px;
         }
 
-        .custom-select {
+        select, .custom-select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
-            background-position: right 1.25rem center;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%23f59e0b' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 1rem center;
             background-repeat: no-repeat;
             background-size: 1.25em 1.25em;
+            padding-right: 2.75rem !important;
         }
 
         .client-logo-filter {
@@ -104,6 +107,20 @@
                 <a href="{{ route('admin.client-logos.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.client-logos.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
                     <i class="fas fa-handshake w-6"></i>
                     Mitra Kerja
+                </a>
+                @endif
+
+                @if($isSuper || in_array('ulasan_rating', $perms))
+                <a href="{{ route('admin.testimonials.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.testimonials.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                    <i class="fas fa-star w-6"></i>
+                    Ulasan & Rating
+                </a>
+                @endif
+
+                @if($isSuper || in_array('informasi_kantor', $perms))
+                <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.settings.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                    <i class="fas fa-building w-6"></i>
+                    Informasi Kantor
                 </a>
                 @endif
 

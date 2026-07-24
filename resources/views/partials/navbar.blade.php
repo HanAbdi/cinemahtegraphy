@@ -13,8 +13,8 @@
                         class="{{ Request::is('/') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Beranda</a>
                     <a href="{{ route('about') }}"
                         class="{{ Request::is('tentang') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Tentang</a>
-                    <a href="{{ route('services') }}"
-                        class="{{ Request::is('layanan') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Layanan</a>
+                    <a href="{{ route('products') }}"
+                        class="{{ Request::is('produk') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Produk</a>
                     <a href="{{ route('portfolios.index') }}"
                         class="{{ Request::is('portfolios') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Portofolio</a>
                     <a href="{{ route('faq') }}"
@@ -36,8 +36,8 @@
             class="{{ Request::is('/') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Beranda</a>
         <a href="{{ route('about') }}"
             class="{{ Request::is('tentang') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Tentang</a>
-        <a href="{{ route('services') }}"
-            class="{{ Request::is('layanan') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Layanan</a>
+        <a href="{{ route('products') }}"
+            class="{{ Request::is('produk') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Produk</a>
         <a href="{{ route('portfolios.index') }}"
             class="{{ Request::is('portfolios') ? 'text-amber-500' : 'text-gray-300' }} hover:text-amber-500 transition duration-300">Portofolio</a>
         <a href="{{ route('faq') }}"

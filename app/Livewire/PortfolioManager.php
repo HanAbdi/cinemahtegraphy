@@ -48,6 +48,25 @@ class PortfolioManager extends Component
         $this->portfolios = $query->get();
     }
 
+    public function toggleFeatured($id)
+    {
+        $portfolio = Portfolio::findOrFail($id);
+        $portfolio->is_featured = !$portfolio->is_featured;
+        $portfolio->save();
+
+        $status = $portfolio->is_featured ? 'menandai sebagai unggulan' : 'menghapus dari unggulan';
+
+        \App\Models\ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'updated',
+            'model_type' => 'Portfolio',
+            'model_id' => $portfolio->id,
+            'description' => "Berhasil {$status}: {$portfolio->title}",
+        ]);
+
+        $this->loadPortfolios();
+    }
+
     public function confirmDelete($id)
     {
         $this->delete_id = $id;

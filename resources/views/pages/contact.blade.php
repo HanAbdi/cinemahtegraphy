@@ -35,9 +35,9 @@
                             </div>
                             <div>
                                 <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Alamat Utama</h3>
-                                <p class="text-sm text-gray-300 font-light leading-relaxed"> Jl. Cakra Sentosa Block z No.3
-                                    - Wisma
-                                    Cakra. Kel. Limo - Kec Limo - Cinere Depok</p>
+                                <p class="text-sm text-gray-300 font-light leading-relaxed">
+                                    {{ $companySettings->office_address }}
+                                </p>
                             </div>
                         </div>
 
@@ -47,9 +47,8 @@
                                 <i class="fas fa-envelope"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Korespondensi
-                                    Email</h3>
-                                <p class="text-sm text-gray-300 font-light">info@cinemahtegraphy.com</p>
+                                <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Korespondensi Email</h3>
+                                <p class="text-sm text-gray-300 font-light">{{ $companySettings->email }}</p>
                             </div>
                         </div>
 
@@ -59,21 +58,22 @@
                                 <i class="fas fa-phone"></i>
                             </div>
                             <div>
-                                <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Hotline / WhatsApp
-                                </h3>
-                                <p class="text-sm text-gray-300 font-light">(+62) 123-456-789</p>
+                                <h3 class="text-xs uppercase font-bold text-gray-500 tracking-wider mb-1">Hotline / WhatsApp</h3>
+                                <p class="text-sm text-gray-300 font-light">{{ $companySettings->phone }}</p>
                             </div>
                         </div>
                     </div>
 
-                    <div
-                        class="w-full aspect-video bg-gray-950 border border-gray-900 rounded-sm overflow-hidden shadow-xl opacity-70 hover:opacity-100 transition duration-500">
-                        <iframe
-                            src="https://maps.google.com/maps?q=Jl.%20Cakra%20Sentosa%20Block%20z%20No.3%20-%20Wisma%20Cakra.%20Kel.%20Limo%20-%20Kec%20Limo%20-%20Cinere%20Depok&t=&z=16&ie=UTF8&iwloc=&output=embed"
-                            class="w-full h-full border-0" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
+                    @if($companySettings->maps_iframe_url)
+                        <div
+                            class="w-full aspect-video bg-gray-950 border border-gray-900 rounded-sm overflow-hidden shadow-xl opacity-80 hover:opacity-100 transition duration-500">
+                            <iframe
+                                src="{{ $companySettings->maps_iframe_url }}"
+                                class="w-full h-full border-0" allowfullscreen="" loading="lazy"
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        </div>
+                    @endif
                 </div>
 
                 <div class="lg:col-span-7 bg-[#0f1524] border border-gray-900 rounded-sm p-8 sm:p-10 shadow-2xl">

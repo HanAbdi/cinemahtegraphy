@@ -65,6 +65,14 @@
                             Mitra Kerja
                         </label>
                         <label class="flex items-center text-sm text-gray-300 cursor-pointer">
+                            <input type="checkbox" wire:model="perm_ulasan_rating" class="rounded bg-[#0b0f19] border-gray-700 text-amber-500 focus:ring-amber-500 mr-2">
+                            Ulasan & Rating
+                        </label>
+                        <label class="flex items-center text-sm text-gray-300 cursor-pointer">
+                            <input type="checkbox" wire:model="perm_informasi_kantor" class="rounded bg-[#0b0f19] border-gray-700 text-amber-500 focus:ring-amber-500 mr-2">
+                            Informasi Kantor
+                        </label>
+                        <label class="flex items-center text-sm text-gray-300 cursor-pointer">
                             <input type="checkbox" wire:model="perm_live_chat" class="rounded bg-[#0b0f19] border-gray-700 text-amber-500 focus:ring-amber-500 mr-2">
                             Live Chat
                         </label>

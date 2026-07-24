@@ -16,8 +16,27 @@ class PortfolioForm extends Component
     
     public $project_scope = "";
     public $tag_scheme = "A";
+    public $is_featured = false;
     
-    public $old_image; 
+    public $old_image;
+
+    public $productCategories = [
+        'Company Profile Video',
+        'Video Promosi / TVC',
+        'Produksi Video Iklan Komersial',
+        'Produksi Video Dokumenter Event',
+        'Video Drone FPV Oneshot',
+        'Custom Project Video',
+        'Private Vlogger',
+        'Event Fotografer',
+    ];
+
+    public function updatedCategory($value)
+    {
+        if (empty($this->service_type) || in_array($this->service_type, $this->productCategories)) {
+            $this->service_type = $value;
+        }
+    }
 
     public function mount($id = null)
     {
@@ -36,6 +55,7 @@ class PortfolioForm extends Component
             
             $this->project_scope = $portfolio->project_scope;
             $this->tag_scheme = $portfolio->tag_scheme ?? "A";
+            $this->is_featured = (bool) $portfolio->is_featured;
         } else {
             $this->year = date("Y");
         }
@@ -49,10 +69,11 @@ class PortfolioForm extends Component
             "client" => "required|string|max:255",
             "year" => "required|integer",
             "description" => "required|string",
-            "service_type" => "required|string|max:255",
             "image" => $this->portfolio_id ? "nullable|image" : "required|image",
             "project_scope" => "nullable|string|max:20",
         ]);
+
+        $this->service_type = $this->category;
 
         $imagePath = $this->old_image;
         if ($this->image) {
@@ -128,6 +149,7 @@ class PortfolioForm extends Component
                 "tags" => $tagsArray,
                 "project_scope" => $this->project_scope,
                 "tag_scheme" => $this->tag_scheme,
+                "is_featured" => $this->is_featured,
             ]
         );
 

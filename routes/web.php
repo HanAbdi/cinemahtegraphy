@@ -4,11 +4,20 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     
-    $portfolios = \App\Models\Portfolio::orderBy('created_at', 'desc')->take(3)->get();
+    $portfolios = \App\Models\Portfolio::orderBy('is_featured', 'desc')->orderBy('created_at', 'desc')->take(3)->get();
 
     $clients = \App\Models\ClientLogo::orderBy('created_at', 'asc')->get();
 
-    return view('pages.index', compact('portfolios', 'clients'));
+    $testimonials = \App\Models\Testimonial::where('status', 'approved')
+        ->orderBy('is_featured', 'desc')
+        ->orderBy('created_at', 'desc')
+        ->take(6)
+        ->get();
+    
+    $averageRating = round(\App\Models\Testimonial::where('status', 'approved')->avg('rating') ?: 5.0, 1);
+    $totalTestimonialsCount = \App\Models\Testimonial::where('status', 'approved')->count();
+
+    return view('pages.index', compact('portfolios', 'clients', 'testimonials', 'averageRating', 'totalTestimonialsCount'));
 });
 
 Route::get('/portfolio/{id}', function ($id) {
@@ -29,8 +38,8 @@ Route::get('/tentang', function () {
     return view('pages.about', compact('stats'));
 })->name('about');
 
-Route::get('/layanan', function () {
-    // Array Dummy Layanan Utama Anril Film
+Route::get('/produk', function () {
+    // Array Dummy Produk Utama Anril Film
     $services = [
         [
             'title' => 'Company Profile Video',
@@ -51,7 +60,7 @@ Route::get('/layanan', function () {
             'features' => ['Pilot Drone Berlisensi Resmi', 'Manuver Indoor & Outdoor Ketat', 'Kamera Resolusi 4K / 6K Raw', 'Aman untuk Area Manufaktur']
         ],
         [
-            'title' => 'Produksi Video Dokumentasi Event',
+            'title' => 'Produksi Video Dokumenter Event',
             'icon' => 'fas fa-helicopter',
             'short_desc' => 'Pengambilan gambar udara presisi tinggi menggunakan drone FPV untuk menghasilkan transisi tanpa putus (oneshot) yang spektakuler.',
             'features' => ['Pilot Drone Berlisensi Resmi', 'Manuver Indoor & Outdoor Ketat', 'Kamera Resolusi 4K / 6K Raw', 'Aman untuk Area Manufaktur']
@@ -67,11 +76,23 @@ Route::get('/layanan', function () {
             'icon' => 'fas fa-sliders',
             'short_desc' => 'Solusi kustomisasi penuh produksi video dokumentasi event akbar, internal training, atau peluncuran produk baru sesuai bujet Anda.',
             'features' => ['Fleksibilitas Skala Kru', 'Manajemen Aset File Cloud', 'Multi-camera Setup Multi-angle', 'Sistem Revisi Terjadwal']
+        ],
+        [
+            'title' => 'Private Vlogger',
+            'icon' => 'fas fa-video',
+            'short_desc' => 'Dokumentasi eksklusif gaya vlogging untuk keperluan personal, event VIP, atau di balik layar (BTS).',
+            'features' => ['Perekaman Gaya POV', 'Peralatan Ringkas & Mobile', 'Editing Cepat untuk Sosmed', 'Nuansa Intim & Personal']
+        ],
+        [
+            'title' => 'Event Fotografer',
+            'icon' => 'fas fa-camera',
+            'short_desc' => 'Layanan fotografi profesional untuk mengabadikan momen penting acara Anda dengan kualitas resolusi tinggi.',
+            'features' => ['Fotografer Berpengalaman', 'Pemrosesan Warna Premium', 'Pengiriman File Cepat', 'Album Digital Eksklusif']
         ]
     ];
 
-    return view('pages.services', compact('services'));
-})->name('services');
+    return view('pages.products', compact('services'));
+})->name('products');
 
 Route::get('/portfolios', function () {
     // Array Master Portofolio Lengkap untuk Halaman Kumpulan Portofolio
@@ -84,7 +105,7 @@ Route::get('/faq', function () {
     $faqs = [
         [
             'question' => 'Berapa lama estimasi proses pengerjaan satu project video?',
-            'answer' => 'Estimasi pengerjaan bervariasi tergantung skala project. Untuk Video Company Profile standar biasanya memakan waktu 14–21 hari kerja, meliputi tahap pra-produksi, syuting, hingga pasca-produksi (editing & color grading).'
+            'answer' => 'Estimasi pengerjaan bervariasi tergantung skala proyek. Untuk eksekusi produksi lapangan biasanya memakan waktu sekitar 4 hari kerja. Adapun untuk tahapan pra-produksi, pasca-produksi, hingga proyek produksi berskala besar (sebulan), jangka waktu dan teknisnya dapat disesuaikan berdasarkan kesepakatan.'
         ],
         [
             'question' => 'Apakah Anril Film melayani produksi video di luar Jabodetabek?',
@@ -100,7 +121,7 @@ Route::get('/faq', function () {
         ],
         [
             'question' => 'Apakah klien bisa mendapatkan seluruh file mentah (raw footage)?',
-            'answer' => 'Semua file mentah (raw footage) merupakan hak cipta production house, namun dapat diserahkan kepada klien dengan kesepakatan khusus atau biaya tambahan untuk pemindahan aset data via cloud/harddisk eksternal.'
+            'answer' => 'Semua file mentah (raw footage) merupakan hak cipta production house, namun dapat diserahkan kepada klien berdasarkan kesepakatan khusus.'
         ]
     ];
 
@@ -162,6 +183,8 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     Route::get('/quotes', \App\Livewire\QuoteRequestManager::class)->name('quotes.index')->middleware('permission:penawaran');
     Route::get('/chat', \App\Livewire\AdminChatManager::class)->name('chat')->middleware('permission:live_chat');
     Route::get('/client-logos', \App\Livewire\ClientLogoManager::class)->name('client-logos.index')->middleware('permission:mitra_kerja');
+    Route::get('/testimonials', \App\Livewire\TestimonialManager::class)->name('testimonials.index')->middleware('permission:ulasan_rating');
+    Route::get('/settings', \App\Livewire\CompanySettingsManager::class)->name('settings.index')->middleware('permission:informasi_kantor');
     
     // CRM / Projects Workflow
     Route::get('/projects/kanban', \App\Livewire\ProjectKanban::class)->name('projects.kanban')->middleware('permission:penawaran');

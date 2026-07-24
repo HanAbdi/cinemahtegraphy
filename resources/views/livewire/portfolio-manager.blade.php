@@ -25,6 +25,7 @@
                         <th class="p-4 font-semibold">Judul & Klien</th>
                         <th class="p-4 font-semibold">Kategori</th>
                         <th class="p-4 font-semibold text-center">Tahun</th>
+                        <th class="p-4 font-semibold text-center">Beranda</th>
                         <th class="p-4 font-semibold text-right">Aksi</th>
                     </tr>
                 </thead>
@@ -58,6 +59,12 @@
                                 <div class="text-xs text-gray-500 mt-1">{{ $item->service_type }}</div>
                             </td>
                             <td class="p-4 text-center text-gray-400">{{ $item->year }}</td>
+                            <td class="p-4 text-center">
+                                <button wire:click="toggleFeatured({{ $item->id }})" title="Klik untuk ubah status unggulan" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold transition-all {{ $item->is_featured ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30 shadow-sm' : 'bg-gray-800 text-gray-500 hover:text-gray-300 border border-gray-700' }}">
+                                    <i class="fa{{ $item->is_featured ? 's' : 'r' }} fa-star text-amber-400"></i>
+                                    <span>{{ $item->is_featured ? 'Unggulan' : 'Standar' }}</span>
+                                </button>
+                            </td>
                             <td class="p-4 text-right">
                                 <a href="{{ route('admin.portfolios.edit', $item->id) }}" class="inline-block text-amber-500 hover:text-amber-400 p-2 transition-colors">
                                     <i class="fas fa-edit"></i>
@@ -69,7 +76,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="p-8 text-center text-gray-500">
+                            <td colspan="5" class="p-8 text-center text-gray-500">
                                 Belum ada portofolio yang ditambahkan.
                             </td>
                         </tr>

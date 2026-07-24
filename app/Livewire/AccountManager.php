@@ -22,6 +22,8 @@ class AccountManager extends Component
     public $perm_portofolio = false;
     public $perm_penawaran = false;
     public $perm_mitra_kerja = false;
+    public $perm_ulasan_rating = false;
+    public $perm_informasi_kantor = false;
     public $perm_live_chat = false;
 
     public $editId = null;
@@ -63,12 +65,14 @@ class AccountManager extends Component
         $this->perm_portofolio = in_array('portofolio', $perms);
         $this->perm_penawaran = in_array('penawaran', $perms);
         $this->perm_mitra_kerja = in_array('mitra_kerja', $perms);
+        $this->perm_ulasan_rating = in_array('ulasan_rating', $perms);
+        $this->perm_informasi_kantor = in_array('informasi_kantor', $perms);
         $this->perm_live_chat = in_array('live_chat', $perms);
     }
 
     public function cancelEdit()
     {
-        $this->reset(['editId', 'name', 'email', 'password', 'role', 'perm_portofolio', 'perm_penawaran', 'perm_mitra_kerja', 'perm_live_chat', 'isConfirmSaveOpen', 'confirmType', 'confirmPassword', 'confirmEmail', 'tempSaveData']);
+        $this->reset(['editId', 'name', 'email', 'password', 'role', 'perm_portofolio', 'perm_penawaran', 'perm_mitra_kerja', 'perm_ulasan_rating', 'perm_informasi_kantor', 'perm_live_chat', 'isConfirmSaveOpen', 'confirmType', 'confirmPassword', 'confirmEmail', 'tempSaveData']);
         $this->resetValidation();
     }
 
@@ -135,6 +139,8 @@ class AccountManager extends Component
         if ($this->perm_portofolio) $permissions[] = 'portofolio';
         if ($this->perm_penawaran) $permissions[] = 'penawaran';
         if ($this->perm_mitra_kerja) $permissions[] = 'mitra_kerja';
+        if ($this->perm_ulasan_rating) $permissions[] = 'ulasan_rating';
+        if ($this->perm_informasi_kantor) $permissions[] = 'informasi_kantor';
         if ($this->perm_live_chat) $permissions[] = 'live_chat';
 
         $data = [
