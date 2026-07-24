@@ -19,9 +19,7 @@
                 Video Production House
             </span>
             <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mt-6 mb-6 leading-none uppercase">
-                Experienced. <span
-                    class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Cinematic.</span>
-                Economic.
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Cinematic</span> Ondimen.
             </h1>
             <p class="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">
                 CINEMAHTEGRAPHY menghadirkan solusi pembuatan video corporate elegan berstandar industri nasional dengan
@@ -108,8 +106,14 @@
                 <article
                     class="group bg-[#0f1524] border border-gray-900 rounded-sm overflow-hidden hover:border-gray-800 transition duration-300 flex flex-col h-full shadow-lg">
                     <div class="relative aspect-video bg-black overflow-hidden">
-                        <img src="{{ $item->image_path ? Storage::url($item->image_path) : asset('assets/img/thumb-1.jpg') }}" alt="{{ $item->title }}"
-                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
+                        @if($item->image_path)
+                            <img src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center bg-gray-900">
+                                <i class="fas fa-film text-4xl text-gray-700"></i>
+                            </div>
+                        @endif
 
                         @if($item->project_scope === 'Nasional')
                             <span
@@ -142,7 +146,11 @@
                         <p class="text-sm text-gray-400 line-clamp-2 font-light leading-relaxed mb-4">
                             {{ strip_tags($item->description) }}
                         </p>
+<<<<<<< HEAD
                         <a href="{{ url('/portfolio/' . $item->id) }}"
+=======
+                        <a href="{{ route('portfolio.detail', $item->id) }}"
+>>>>>>> feature/frontend-ui
                             class="mt-auto text-xs font-semibold uppercase tracking-wider text-gray-300 hover:text-white border-b border-gray-800 hover:border-amber-500 pb-1 self-start transition duration-200">
                             Detail Proyek <i class="fas fa-chevron-right text-[10px] ml-1"></i>
                         </a>
@@ -151,5 +159,85 @@
             @endforeach
         </div>
     </section>
+
+    <!-- Section Testimoni & Rating Klien -->
+    <section class="bg-[#0b0f19] border-t border-gray-900 text-gray-100 py-24">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-16 gap-6">
+                <div>
+                    <span class="text-xs uppercase tracking-widest text-amber-500 font-bold bg-amber-500/10 px-4 py-2 border border-amber-500/20 rounded-full">
+                        Client Testimonials
+                    </span>
+                    <h2 class="text-3xl sm:text-5xl font-black tracking-tight text-white mt-6 uppercase leading-none">
+                        Ulasan & <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Rating Klien</span>
+                    </h2>
+                    <div class="flex items-center gap-3 mt-4">
+                        <div class="flex text-amber-400 text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <span class="text-base font-bold text-white">{{ $averageRating }} / 5.0</span>
+                        <span class="text-xs text-gray-400">({{ $totalTestimonialsCount }} Ulasan Terverifikasi)</span>
+                    </div>
+                </div>
+
+                <button onclick="Livewire.dispatch('openRatingModal')" class="bg-amber-500 hover:bg-amber-400 text-black font-bold uppercase tracking-wider text-xs px-6 py-3.5 rounded-sm transition duration-300 shadow-xl shadow-amber-500/10 flex items-center gap-2 cursor-pointer">
+                    <i class="fas fa-edit"></i>
+                    <span>Beri Ulasan & Rating</span>
+                </button>
+            </div>
+
+            @if($testimonials->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    @foreach($testimonials as $item)
+                        <div class="bg-[#0f1524] border border-gray-900 rounded-sm p-8 flex flex-col justify-between hover:border-amber-500/30 transition duration-300 shadow-lg">
+                            <div>
+                                <div class="flex items-center justify-between mb-4">
+                                    <div class="flex text-amber-400 text-xs gap-1">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            <i class="fas fa-star {{ $i <= $item->rating ? 'text-amber-400' : 'text-gray-700' }}"></i>
+                                        @endfor
+                                    </div>
+                                    @if($item->is_featured)
+                                        <span class="text-[10px] uppercase tracking-wider font-bold bg-amber-500/10 text-amber-400 px-2 py-0.5 border border-amber-500/20 rounded-xs">
+                                            Terverifikasi
+                                        </span>
+                                    @endif
+                                </div>
+                                <p class="text-sm text-gray-300 font-light leading-relaxed mb-6 italic">
+                                    "{{ $item->review }}"
+                                </p>
+                            </div>
+
+                            <div class="pt-4 border-t border-gray-800/60 flex items-center justify-between">
+                                <div class="flex items-center gap-3">
+                                    @if($item->avatar_path)
+                                        <img src="{{ asset('storage/' . $item->avatar_path) }}" alt="{{ $item->client_name }}" class="w-10 h-10 rounded-full object-cover border border-amber-500/40 shrink-0 shadow-md">
+                                    @else
+                                        <div class="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/20 text-amber-500 text-xs font-bold flex items-center justify-center uppercase shrink-0">
+                                            {{ substr($item->client_name, 0, 1) }}
+                                        </div>
+                                    @endif
+                                    <div>
+                                        <h4 class="text-sm font-bold text-white leading-tight">{{ $item->client_name }}</h4>
+                                        <p class="text-xs text-gray-500 font-light mt-0.5">{{ $item->client_company ?: 'Klien Cinemahtegraphy' }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @else
+                <div class="bg-[#0f1524] border border-gray-900 rounded-sm p-12 text-center">
+                    <p class="text-sm text-gray-400 font-light">Belum ada ulasan terverifikasi. Jadilah yang pertama memberikan ulasan!</p>
+                </div>
+            @endif
+        </div>
+    </section>
+
+    @livewire('public-rating-modal')
 
 @endsection

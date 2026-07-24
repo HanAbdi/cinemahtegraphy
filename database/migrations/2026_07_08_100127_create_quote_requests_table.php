@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('service_interested');
             $table->text('message');
-            $table->enum('status', ['new', 'processing', 'finished'])->default('new');
+            $table->enum('status', ['new', 'processing', 'approved', 'finished'])->default('new');
             $table->boolean('is_archived')->default(false);
             $table->timestamp('read_at')->nullable();
             $table->timestamps();

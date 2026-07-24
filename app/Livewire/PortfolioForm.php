@@ -16,8 +16,27 @@ class PortfolioForm extends Component
     
     public $project_scope = "";
     public $tag_scheme = "A";
+    public $is_featured = false;
     
-    public $old_image; 
+    public $old_image;
+
+    public $productCategories = [
+        'Company Profile Video',
+        'Video Promosi / TVC',
+        'Produksi Video Iklan Komersial',
+        'Produksi Video Dokumenter Event',
+        'Video Drone FPV Oneshot',
+        'Custom Project Video',
+        'Private Vlogger',
+        'Event Fotografer',
+    ];
+
+    public function updatedCategory($value)
+    {
+        if (empty($this->service_type) || in_array($this->service_type, $this->productCategories)) {
+            $this->service_type = $value;
+        }
+    }
 
     public function mount($id = null)
     {
@@ -36,6 +55,7 @@ class PortfolioForm extends Component
             
             $this->project_scope = $portfolio->project_scope;
             $this->tag_scheme = $portfolio->tag_scheme ?? "A";
+            $this->is_featured = (bool) $portfolio->is_featured;
         } else {
             $this->year = date("Y");
         }
@@ -49,17 +69,44 @@ class PortfolioForm extends Component
             "client" => "required|string|max:255",
             "year" => "required|integer",
             "description" => "required|string",
-            "service_type" => "required|string|max:255",
-            "image" => $this->portfolio_id ? "nullable|image|max:2048" : "required|image|max:2048",
+            "image" => $this->portfolio_id ? "nullable|image" : "required|image",
             "project_scope" => "nullable|string|max:20",
         ]);
+
+        $this->service_type = $this->category;
 
         $imagePath = $this->old_image;
         if ($this->image) {
             if ($this->old_image && Storage::disk("public")->exists($this->old_image)) {
                 Storage::disk("public")->delete($this->old_image);
             }
-            $imagePath = $this->image->store("portfolios", "public");
+            
+            $manager = new \Intervention\Image\ImageManager(new \Intervention\Image\Drivers\Gd\Driver());
+            $img = $manager->read($this->image->getRealPath());
+            
+            $quality = 90;
+            $encoded = $img->toWebp($quality);
+            
+            // Loop to compress if size > 2MB (2000000 bytes)
+            while (strlen($encoded->toString()) > 2000000 && $quality > 10) {
+                $quality -= 10;
+                $encoded = $img->toWebp($quality);
+            }
+            
+            // If still over 2MB, resize it down to max width 1920
+            if (strlen($encoded->toString()) > 2000000) {
+                $img->scaleDown(width: 1920);
+                $quality = 80;
+                $encoded = $img->toWebp($quality);
+                while (strlen($encoded->toString()) > 2000000 && $quality > 10) {
+                    $quality -= 10;
+                    $encoded = $img->toWebp($quality);
+                }
+            }
+
+            $filename = 'portfolios/' . Str::uuid() . '.webp';
+            Storage::disk("public")->put($filename, $encoded->toString());
+            $imagePath = $filename;
         }
 
         $tagsArray = $this->tags ? array_map("trim", explode(",", $this->tags)) : [];
@@ -102,6 +149,7 @@ class PortfolioForm extends Component
                 "tags" => $tagsArray,
                 "project_scope" => $this->project_scope,
                 "tag_scheme" => $this->tag_scheme,
+                "is_featured" => $this->is_featured,
             ]
         );
 

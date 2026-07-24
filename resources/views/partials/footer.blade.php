@@ -8,38 +8,31 @@
             </p>
         </div>
         <div>
-            <h4 class="text-sm font-bold uppercase tracking-widest text-amber-500 mb-6">Layanan Populer</h4>
-            <ul class="space-y-3 text-sm text-gray-400 font-light">
-                <li><a href="#" class="hover:text-amber-400 transition">Company Profile Video</a></li>
-                <li><a href="#" class="hover:text-amber-400 transition">Video Promosi / TVC</a></li>
-                <li><a href="#" class="hover:text-amber-400 transition">Video Drone FPV Oneshot</a></li>
+            <h4 class="text-sm font-bold uppercase tracking-widest text-amber-500 mb-6">Produk Populer</h4>
+            <ul class="space-y-4">
+                <li><a href="{{ route('products') }}" class="text-gray-400 hover:text-amber-500 transition duration-300">Company Profile</a></li>
+                <li><a href="{{ route('products') }}" class="text-gray-400 hover:text-amber-500 transition duration-300">Video Promosi</a></li>
+                <li><a href="{{ route('products') }}" class="text-gray-400 hover:text-amber-500 transition duration-300">Drone FPV</a></li>
                 <li><a href="#" class="hover:text-amber-400 transition">Custom Project Video</a></li>
             </ul>
         </div>
         <div>
             <h4 class="text-sm font-bold uppercase tracking-widest text-amber-500 mb-6">Kontak Kantor</h4>
             <address class="text-sm text-gray-400 font-light not-italic space-y-3">
-                <p><i class="fas fa-map-marker-alt text-amber-500 mr-2.5"></i> Jl. Cakra Sentosa Block z No.3 - Wisma
-                    Cakra. Kel. Limo - Kec Limo - Cinere Depok</p>
-                <p><i class="fas fa-envelope text-amber-500 mr-2.5"></i> info@cinemahtegraphy.com</p>
-                <p><i class="fas fa-phone text-amber-500 mr-2.5"></i> (+62) 123-456-789</p>
+                <p><i class="fas fa-map-marker-alt text-amber-500 mr-2.5"></i> {{ $companySettings->office_address }}</p>
+                <p><i class="fas fa-envelope text-amber-500 mr-2.5"></i> {{ $companySettings->email }}</p>
+                <p><i class="fas fa-phone text-amber-500 mr-2.5"></i> {{ $companySettings->phone }}</p>
             </address>
         </div>
         <div>
             <h4 class="text-sm font-bold uppercase tracking-widest text-amber-500 mb-6">Social Media</h4>
             <div class="flex items-center space-x-4">
-                <a href="#"
+                <a href="{{ $companySettings->instagram_url ?: '#' }}" target="_blank"
                     class="w-10 h-10 rounded-full bg-[#0f1524] flex items-center justify-center text-gray-400 hover:text-black hover:bg-amber-500 transition duration-300 text-lg"><i
                         class="fab fa-instagram"></i></a>
-                <a href="#"
+                <a href="{{ $companySettings->youtube_url ?: '#' }}" target="_blank"
                     class="w-10 h-10 rounded-full bg-[#0f1524] flex items-center justify-center text-gray-400 hover:text-black hover:bg-amber-500 transition duration-300 text-lg"><i
                         class="fab fa-youtube"></i></a>
-                <a href="#"
-                    class="w-10 h-10 rounded-full bg-[#0f1524] flex items-center justify-center text-gray-400 hover:text-black hover:bg-amber-500 transition duration-300 text-lg"><i
-                        class="fab fa-linkedin-in"></i></a>
-                <a href="#"
-                    class="w-10 h-10 rounded-full bg-[#0f1524] flex items-center justify-center text-gray-400 hover:text-black hover:bg-amber-500 transition duration-300 text-lg"><i
-                        class="fab fa-tiktok"></i></a>
             </div>
         </div>
     </div>

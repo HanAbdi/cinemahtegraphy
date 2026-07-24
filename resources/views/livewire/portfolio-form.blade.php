@@ -23,19 +23,22 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-1">Kategori</label>
-                    <input type="text" wire:model="category" placeholder="Cth: Commercial" class="w-full bg-[#111827] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors">
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Kategori / Jenis Produk</label>
+                    <select wire:model.live="category" class="custom-select w-full bg-[#111827] border border-gray-700 rounded-lg pl-4 pr-10 py-2.5 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors cursor-pointer">
+                        <option value="">-- Pilih Kategori / Jenis Produk --</option>
+                        @foreach($productCategories as $cat)
+                            <option value="{{ $cat }}">{{ $cat }}</option>
+                        @endforeach
+                        @if($category && !in_array($category, $productCategories))
+                            <option value="{{ $category }}">{{ $category }}</option>
+                        @endif
+                    </select>
                     @error("category") <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-1">Jenis Layanan</label>
-                    <input type="text" wire:model="service_type" placeholder="Cth: TVC Production" class="w-full bg-[#111827] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors">
-                    @error("service_type") <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-400 mb-1">Tahun</label>
+                    <label class="block text-sm font-medium text-gray-400 mb-1">Tahun Proyek</label>
                     <input type="number" wire:model="year" class="w-full bg-[#111827] border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors">
                     @error("year") <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
@@ -118,6 +121,18 @@
                     <p class="text-xs text-gray-500 mt-1">Maksimal 20 karakter.</p>
                     @error("project_scope") <span class="text-red-400 text-xs mt-1 block">{{ $message }}</span> @enderror
                 </div>
+            </div>
+
+            <!-- Postingan Unggulan Toggle -->
+            <div class="pt-4 border-t border-gray-800">
+                <label class="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" wire:model="is_featured" class="w-5 h-5 text-amber-500 bg-gray-900 border-gray-700 rounded focus:ring-amber-500 focus:ring-offset-gray-900">
+                    <span class="text-sm font-medium text-white flex items-center gap-2">
+                        <i class="fas fa-star text-amber-400"></i>
+                        Tampilkan sebagai Postingan Unggulan di Beranda
+                    </span>
+                </label>
+                <p class="text-xs text-gray-400 mt-1 ml-8">Jika diaktifkan, portofolio ini akan diprioritaskan untuk muncul di 3 slot terdepan Halaman Utama.</p>
             </div>
 
             <div class="flex justify-end gap-3 mt-8 pt-4 border-t border-gray-800">

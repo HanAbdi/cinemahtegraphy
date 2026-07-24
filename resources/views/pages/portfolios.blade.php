@@ -22,15 +22,14 @@
             <button class="filter-btn active text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-2.5 bg-amber-500 text-black rounded-sm transition duration-300 cursor-pointer" data-category="all">
                 All Projects
             </button>
-            <button class="filter-btn text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-2.5 bg-[#0f1524] text-gray-400 border border-gray-900 rounded-sm hover:border-amber-500/30 hover:text-white transition duration-300 cursor-pointer" data-category="Corporate Video">
-                Corporate
-            </button>
-            <button class="filter-btn text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-2.5 bg-[#0f1524] text-gray-400 border border-gray-900 rounded-sm hover:border-amber-500/30 hover:text-white transition duration-300 cursor-pointer" data-category="Commercial Video">
-                Commercial
-            </button>
-            <button class="filter-btn text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-2.5 bg-[#0f1524] text-gray-400 border border-gray-900 rounded-sm hover:border-amber-500/30 hover:text-white transition duration-300 cursor-pointer" data-category="Drone FPV">
-                Drone FPV
-            </button>
+            @php
+                $existingCategories = $allPortfolios->pluck('category')->unique()->filter();
+            @endphp
+            @foreach($existingCategories as $cat)
+                <button class="filter-btn text-xs sm:text-sm font-bold uppercase tracking-wider px-5 py-2.5 bg-[#0f1524] text-gray-400 border border-gray-900 rounded-sm hover:border-amber-500/30 hover:text-white transition duration-300 cursor-pointer" data-category="{{ $cat }}">
+                    {{ $cat }}
+                </button>
+            @endforeach
         </div>
 
         <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

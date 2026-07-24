@@ -15,11 +15,17 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Default Super Admin account
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Super Admin',
+            'email' => 'admin@gmail.com',
+            'password' => 'password',
+            'role' => 'superadmin',
+            'permissions' => ['portofolio', 'penawaran', 'live_chat', 'mitra_kerja', 'superadmin_only'],
+            'email_verified_at' => now(),
         ]);
+
+        // Seed dummy data (portfolios, quotes)
+        $this->call(DummyDataSeeder::class);
     }
 }

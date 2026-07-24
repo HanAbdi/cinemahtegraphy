@@ -20,7 +20,8 @@
                         <div class="flex justify-between items-center mt-2">
                             <span class="text-xs uppercase font-semibold
                                 {{ $q->status == 'new' ? 'text-amber-500' : 
-                                  ($q->status == 'processing' ? 'text-gray-400' : 'text-gray-600') }}">
+                                  ($q->status == 'processing' ? 'text-blue-400' : 
+                                  ($q->status == 'approved' ? 'text-green-500' : 'text-gray-600')) }}">
                                 {{ ucfirst($q->status) }}
                             </span>
                             @if($q->is_archived)
@@ -54,8 +55,15 @@
                         <select wire:change="updateStatus({{ $viewingQuote->id }}, $event.target.value)" class="custom-select bg-[#0b0f19] border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-amber-500 focus:border-amber-500 block pl-4 pr-10 py-2 cursor-pointer outline-none">
                             <option value="new" {{ $viewingQuote->status == 'new' ? 'selected' : '' }}>New</option>
                             <option value="processing" {{ $viewingQuote->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                            <option value="approved" {{ $viewingQuote->status == 'approved' ? 'selected' : '' }}>Approved</option>
                             <option value="finished" {{ $viewingQuote->status == 'finished' ? 'selected' : '' }}>Finished</option>
                         </select>
+                        
+                        @if($viewingQuote->status === 'approved')
+                            <button wire:click="confirmConvert({{ $viewingQuote->id }})" class="bg-amber-500 hover:bg-amber-600 text-black px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-[0_0_15px_rgba(245,158,11,0.4)] flex items-center transform hover:scale-105">
+                                <i class="fas fa-magic mr-2"></i> Convert to Project
+                            </button>
+                        @endif
                         
                         <button wire:click="toggleArchive({{ $viewingQuote->id }})" class="w-10 h-10 flex items-center justify-center border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors {{ $viewingQuote->is_archived ? 'text-amber-500' : 'text-gray-400' }}" title="Arsipkan">
                             <i class="fas fa-archive"></i>
@@ -64,6 +72,16 @@
                 </div>
                 
                 <div class="p-6 flex-1 overflow-y-auto">
+                    <!-- Contact Actions -->
+                    <div class="flex gap-4 mb-8">
+                        <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $viewingQuote->phone) }}" target="_blank" class="flex-1 bg-green-500/10 border border-green-500/30 text-green-500 hover:bg-green-500 hover:text-black py-3 rounded-xl flex items-center justify-center font-semibold transition-all shadow-[0_0_10px_rgba(34,197,94,0.1)] hover:shadow-[0_0_20px_rgba(34,197,94,0.4)] transform hover:-translate-y-1">
+                            <i class="fab fa-whatsapp text-lg mr-2"></i> Hubungi via WhatsApp
+                        </a>
+                        <a href="mailto:{{ $viewingQuote->email }}" class="flex-1 bg-blue-500/10 border border-blue-500/30 text-blue-400 hover:bg-blue-500 hover:text-white py-3 rounded-xl flex items-center justify-center font-semibold transition-all shadow-[0_0_10px_rgba(59,130,246,0.1)] hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transform hover:-translate-y-1">
+                            <i class="fas fa-envelope text-lg mr-2"></i> Kirim Email
+                        </a>
+                    </div>
+
                     <div class="mb-6">
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Layanan yang Diminati</div>
                         <div class="inline-block px-3 py-1 bg-amber-500/10 text-amber-500 rounded-full text-sm font-medium">
@@ -90,4 +108,46 @@
             @endif
         </div>
     </div>
+
+    <!-- Premium Convert Modal -->
+    @if($showConvertModal)
+    <div class="fixed inset-0 z-50 flex items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" wire:click="cancelConvert"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-[#111827] border border-gray-700 rounded-2xl shadow-2xl z-10 w-full max-w-md overflow-hidden transform transition-all scale-100 opacity-100">
+            <div class="p-6 border-b border-gray-800 bg-[#1f2937]/50">
+                <h3 class="text-xl font-bold text-white flex items-center">
+                    <i class="fas fa-rocket text-amber-500 mr-3"></i> Konversi ke Proyek
+                </h3>
+                <p class="text-xs text-gray-400 mt-1">Lengkapi data awal untuk memindahkan klien ke Kanban Board.</p>
+            </div>
+            
+            <div class="p-6 space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal Event (Opsional)</label>
+                    <input type="date" wire:model="convertEventDate" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg px-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-2">Uang Muka / DP (Rp)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-2.5 text-gray-500 font-semibold">Rp</span>
+                        <input type="number" wire:model="convertDpAmount" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-gray-800 flex justify-end gap-3 bg-[#1f2937]/30">
+                <button wire:click="cancelConvert" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-400 hover:text-white hover:bg-gray-800 transition-colors">
+                    Batal
+                </button>
+                <button wire:click="convertToProject" class="px-5 py-2.5 rounded-lg text-sm font-bold text-black bg-amber-500 hover:bg-amber-600 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all">
+                    Buat Proyek Baru
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
 </div>
