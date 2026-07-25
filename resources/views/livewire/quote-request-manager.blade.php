@@ -10,25 +10,32 @@
             
             <div class="overflow-y-auto flex-1 divide-y divide-gray-800">
                 @forelse($quotes as $q)
-                    <button wire:click="viewDetails({{ $q->id }})" class="w-full text-left p-4 hover:bg-gray-800/50 transition-colors {{ $viewingQuote && $viewingQuote->id == $q->id ? 'bg-gray-800/80 border-l-4 border-amber-500' : 'border-l-4 border-transparent' }}">
-                        <div class="flex justify-between items-start mb-1">
-                            <h4 class="font-medium {{ $q->read_at ? 'text-gray-300' : 'text-white font-bold' }} truncate">{{ $q->name }}</h4>
-                            <span class="text-xs text-gray-500 whitespace-nowrap">{{ $q->created_at->diffForHumans() }}</span>
+                    <div class="w-full text-left relative hover:bg-gray-800/50 transition-colors {{ $viewingQuote && $viewingQuote->id == $q->id ? 'bg-gray-800/80 border-l-4 border-amber-500' : 'border-l-4 border-transparent' }}">
+                        <div class="p-4 cursor-pointer" wire:click="viewDetails({{ $q->id }})">
+                            <div class="flex justify-between items-start mb-1">
+                                <h4 class="font-medium {{ $q->read_at ? 'text-gray-300' : 'text-white font-bold' }} truncate pr-8">{{ $q->name }}</h4>
+                                <span class="text-xs text-gray-500 whitespace-nowrap">{{ $q->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-xs text-amber-500 mb-2 truncate pr-8">{{ $q->service_interested }}</p>
+                            
+                            <div class="flex justify-between items-center mt-2">
+                                <span class="text-xs uppercase font-semibold
+                                    {{ $q->status == 'new' ? 'text-amber-500' : 
+                                      ($q->status == 'processing' ? 'text-blue-400' : 
+                                      ($q->status == 'approved' ? 'text-green-500' : 'text-gray-600')) }}">
+                                    {{ ucfirst($q->status) }}
+                                </span>
+                            </div>
                         </div>
-                        <p class="text-xs text-amber-500 mb-2 truncate">{{ $q->service_interested }}</p>
-                        
-                        <div class="flex justify-between items-center mt-2">
-                            <span class="text-xs uppercase font-semibold
-                                {{ $q->status == 'new' ? 'text-amber-500' : 
-                                  ($q->status == 'processing' ? 'text-blue-400' : 
-                                  ($q->status == 'approved' ? 'text-green-500' : 'text-gray-600')) }}">
-                                {{ ucfirst($q->status) }}
-                            </span>
+                        <div class="absolute bottom-4 right-4 flex items-center gap-2">
                             @if($q->is_archived)
                                 <i class="fas fa-archive text-gray-600 text-xs"></i>
                             @endif
+                            <button wire:click.stop="confirmDeleteQuote({{ $q->id }})" class="text-gray-500 hover:text-red-500 transition-colors" title="Hapus">
+                                <i class="fas fa-trash text-xs"></i>
+                            </button>
                         </div>
-                    </button>
+                    </div>
                 @empty
                     <div class="p-8 text-center text-gray-500 text-sm">
                         Belum ada permintaan masuk.
@@ -67,6 +74,10 @@
                         
                         <button wire:click="toggleArchive({{ $viewingQuote->id }})" class="w-10 h-10 flex items-center justify-center border border-gray-700 rounded-lg hover:bg-gray-800 transition-colors {{ $viewingQuote->is_archived ? 'text-amber-500' : 'text-gray-400' }}" title="Arsipkan">
                             <i class="fas fa-archive"></i>
+                        </button>
+                        
+                        <button wire:click="confirmDeleteQuote({{ $viewingQuote->id }})" class="w-10 h-10 flex items-center justify-center border border-red-900/30 bg-red-900/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition-colors" title="Hapus">
+                            <i class="fas fa-trash-alt"></i>
                         </button>
                     </div>
                 </div>
@@ -130,11 +141,20 @@
                     <input type="date" wire:model="convertEventDate" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg px-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
                 </div>
                 
-                <div>
-                    <label class="block text-sm font-medium text-gray-300 mb-2">Uang Muka / DP (Rp)</label>
-                    <div class="relative">
-                        <span class="absolute left-4 top-2.5 text-gray-500 font-semibold">Rp</span>
-                        <input type="number" wire:model="convertDpAmount" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Total Harga (Rp)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-2.5 text-gray-500 font-semibold">Rp</span>
+                            <input type="number" wire:model="convertTotalPrice" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Uang Muka / DP (Rp)</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-2.5 text-gray-500 font-semibold">Rp</span>
+                            <input type="number" wire:model="convertDpAmount" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,6 +165,32 @@
                 </button>
                 <button wire:click="convertToProject" class="px-5 py-2.5 rounded-lg text-sm font-bold text-black bg-amber-500 hover:bg-amber-600 shadow-[0_0_15px_rgba(245,158,11,0.3)] transition-all">
                     Buat Proyek Baru
+                </button>
+            </div>
+        </div>
+    </div>
+    @endif
+
+    <!-- Delete Confirmation Modal -->
+    @if($confirmingQuoteDeletion)
+    <div class="fixed inset-0 z-[60] flex items-center justify-center">
+        <!-- Backdrop -->
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" wire:click="cancelDeleteQuote"></div>
+        
+        <!-- Modal Content -->
+        <div class="bg-[#111827] border border-gray-700 rounded-2xl shadow-2xl z-10 w-full max-w-sm overflow-hidden transform transition-all scale-100 opacity-100 p-6 text-center">
+            <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-900/30 mb-4">
+                <i class="fas fa-exclamation-triangle text-2xl text-red-500"></i>
+            </div>
+            <h3 class="text-xl font-bold text-white mb-2">Hapus Penawaran?</h3>
+            <p class="text-sm text-gray-400 mb-6">Apakah Anda yakin ingin menghapus penawaran ini? Tindakan ini tidak dapat dibatalkan.</p>
+            
+            <div class="flex gap-3 justify-center">
+                <button wire:click="cancelDeleteQuote" class="px-5 py-2.5 rounded-lg text-sm font-semibold text-gray-400 border border-gray-700 hover:bg-gray-800 hover:text-white transition-colors w-full">
+                    Batal
+                </button>
+                <button wire:click="deleteQuote" class="px-5 py-2.5 rounded-lg text-sm font-bold text-white bg-red-600 hover:bg-red-700 shadow-[0_0_15px_rgba(220,38,38,0.3)] transition-all w-full">
+                    Ya, Hapus
                 </button>
             </div>
         </div>

@@ -189,6 +189,7 @@ Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(
     // CRM / Projects Workflow
     Route::get('/projects/kanban', \App\Livewire\ProjectKanban::class)->name('projects.kanban')->middleware('permission:penawaran');
     Route::get('/projects/calendar', \App\Livewire\ProjectCalendar::class)->name('projects.calendar')->middleware('permission:penawaran');
+    Route::get('/projects/{project}/invoice', [\App\Http\Controllers\Admin\InvoiceController::class, 'show'])->name('projects.invoice')->middleware('permission:penawaran');
 
     // Account Management (Super Admin only - using a specific role check)
     Route::get('/accounts', \App\Livewire\AccountManager::class)->name('accounts.index')->middleware('permission:superadmin_only');

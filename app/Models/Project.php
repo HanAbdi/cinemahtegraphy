@@ -12,6 +12,8 @@ class Project extends Model
         'status',
         'event_date',
         'dp_amount',
+        'total_price',
+        'payment_status',
     ];
 
     protected $casts = [

@@ -14,6 +14,7 @@ class QuoteRequestManager extends Component
     public $showConvertModal = false;
     public $convertingQuoteId = null;
     public $convertEventDate = null;
+    public $convertTotalPrice = null;
     public $convertDpAmount = null;
 
     public function mount()
@@ -64,6 +65,7 @@ class QuoteRequestManager extends Component
     {
         $this->convertingQuoteId = $id;
         $this->convertEventDate = now()->addDays(7)->format('Y-m-d');
+        $this->convertTotalPrice = null;
         $this->convertDpAmount = null;
         $this->showConvertModal = true;
     }
@@ -82,8 +84,20 @@ class QuoteRequestManager extends Component
             return;
         }
 
-        // Validate DP amount if provided
+        // Validate amount if provided
         $dp = $this->convertDpAmount ? str_replace(['Rp', '.', ',', ' '], '', $this->convertDpAmount) : 0;
+        $total = $this->convertTotalPrice ? str_replace(['Rp', '.', ',', ' '], '', $this->convertTotalPrice) : null;
+        
+        $paymentStatus = 'pending';
+        if (is_numeric($total) && is_numeric($dp) && $total > 0) {
+            if ($dp >= $total) {
+                $paymentStatus = 'paid';
+            } elseif ($dp > 0) {
+                $paymentStatus = 'partial';
+            }
+        } elseif (is_numeric($dp) && $dp > 0) {
+            $paymentStatus = 'partial';
+        }
 
         // Create a new Project linked to this quote
         $project = \App\Models\Project::create([
@@ -92,6 +106,8 @@ class QuoteRequestManager extends Component
             'status' => 'Negotiation/DP',
             'event_date' => $this->convertEventDate,
             'dp_amount' => is_numeric($dp) ? $dp : 0,
+            'total_price' => is_numeric($total) ? $total : null,
+            'payment_status' => $paymentStatus,
         ]);
 
         \App\Models\ActivityLog::create([
@@ -116,6 +132,44 @@ class QuoteRequestManager extends Component
         if ($this->viewingQuote && $this->viewingQuote->id == $id) {
             $this->viewingQuote->is_archived = !$this->viewingQuote->is_archived;
         }
+    }
+
+    public $confirmingQuoteDeletion = false;
+    public $quoteToDelete = null;
+
+    public function confirmDeleteQuote($id)
+    {
+        $this->quoteToDelete = $id;
+        $this->confirmingQuoteDeletion = true;
+    }
+
+    public function cancelDeleteQuote()
+    {
+        $this->confirmingQuoteDeletion = false;
+        $this->quoteToDelete = null;
+    }
+
+    public function deleteQuote()
+    {
+        if (!$this->quoteToDelete) return;
+
+        $quote = QuoteRequest::findOrFail($this->quoteToDelete);
+        $quote->delete();
+        
+        \App\Models\ActivityLog::create([
+            'user_id' => auth()->id(),
+            'action' => 'deleted',
+            'model_type' => 'QuoteRequest',
+            'model_id' => $this->quoteToDelete,
+            'description' => "Menghapus penawaran dari {$quote->name}",
+        ]);
+
+        $this->loadQuotes();
+        if ($this->viewingQuote && $this->viewingQuote->id == $this->quoteToDelete) {
+            $this->viewingQuote = null;
+        }
+
+        $this->cancelDeleteQuote();
     }
 
     public function render()
