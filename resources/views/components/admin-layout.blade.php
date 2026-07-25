@@ -56,6 +56,17 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #f59e0b;
         }
+
+        /* Hide Chrome, Safari, Edge, Opera number spinner arrows */
+        input[type=number]::-webkit-inner-spin-button,
+        input[type=number]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        /* Hide Firefox number spinner arrows */
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
     </style>
     @livewireStyles
     @stack('styles')

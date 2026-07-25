@@ -162,15 +162,21 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#0b0f19] p-4 rounded-xl border border-gray-800">
                         <div>
                             <label class="block text-xs font-medium text-gray-400 mb-1">Total Harga</label>
-                            <input type="number" wire:model="editTotalPrice" class="w-full bg-[#111827] border border-gray-700 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-amber-500 text-sm">
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-500 text-xs font-bold">Rp</span>
+                                <input type="number" wire:model="editTotalPrice" placeholder="0" class="w-full bg-[#111827] border border-gray-700 rounded-lg pl-9 pr-3 py-2 text-gray-200 focus:outline-none focus:border-amber-500 text-xs">
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-400 mb-1">Terbayar (DP/Cicilan)</label>
-                            <input type="number" wire:model="editDpAmount" class="w-full bg-[#111827] border border-gray-700 rounded-lg px-3 py-2 text-green-400 focus:outline-none focus:border-amber-500 text-sm">
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-500 text-xs font-bold">Rp</span>
+                                <input type="number" wire:model="editDpAmount" placeholder="0" class="w-full bg-[#111827] border border-gray-700 rounded-lg pl-9 pr-3 py-2 text-green-400 focus:outline-none focus:border-amber-500 text-xs">
+                            </div>
                         </div>
                         <div>
                             <label class="block text-xs font-medium text-gray-400 mb-1">Status Pembayaran</label>
-                            <select wire:model="editPaymentStatus" class="w-full bg-[#111827] border border-gray-700 rounded-lg px-3 py-2 text-gray-200 focus:outline-none focus:border-amber-500 text-sm">
+                            <select wire:model="editPaymentStatus" class="custom-select w-full bg-[#111827] border border-gray-700 rounded-lg pl-3 pr-8 py-2 text-gray-200 focus:outline-none focus:border-amber-500 text-xs cursor-pointer">
                                 <option value="pending">Belum Lunas (Pending)</option>
                                 <option value="partial">Cicilan (Partial)</option>
                                 <option value="paid">Lunas (Paid)</option>

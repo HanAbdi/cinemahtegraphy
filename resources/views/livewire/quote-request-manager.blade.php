@@ -47,42 +47,50 @@
         <!-- Detail Panel -->
         <div class="lg:col-span-2 bg-[#1f2937] border border-gray-800 rounded-lg overflow-hidden h-[700px] flex flex-col">
             @if($viewingQuote)
-                <div class="p-6 border-b border-gray-800 bg-[#111827] flex flex-col xl:flex-row xl:items-center justify-between gap-4">
-                    <div class="min-w-0 flex-1">
-                        <h3 class="text-xl font-bold text-white mb-1 truncate">{{ $viewingQuote->name }}</h3>
-                        <div class="text-sm text-gray-400 flex flex-wrap items-center gap-x-4 gap-y-1">
-                            <span class="inline-flex items-center"><i class="fas fa-envelope mr-1.5 text-xs text-gray-500"></i> {{ $viewingQuote->email }}</span>
-                            @if($viewingQuote->phone)
-                                <span class="inline-flex items-center"><i class="fas fa-phone mr-1.5 text-xs text-gray-500"></i> {{ $viewingQuote->phone }}</span>
-                            @endif
+                <div class="p-5 border-b border-gray-800 bg-[#111827] space-y-4">
+                    <!-- Top Row: Name/Contact & Utility Icons -->
+                    <div class="flex items-start justify-between gap-4">
+                        <div class="min-w-0 flex-1">
+                            <h3 class="text-xl font-bold text-white tracking-tight truncate">{{ $viewingQuote->name }}</h3>
+                            <div class="text-xs text-gray-400 flex flex-wrap items-center gap-x-4 gap-y-1 mt-1">
+                                <span class="inline-flex items-center truncate max-w-[240px]" title="{{ $viewingQuote->email }}">
+                                    <i class="fas fa-envelope mr-1.5 text-gray-500 shrink-0"></i> {{ $viewingQuote->email }}
+                                </span>
+                                @if($viewingQuote->phone)
+                                    <span class="inline-flex items-center">
+                                        <i class="fas fa-phone mr-1.5 text-gray-500 shrink-0"></i> {{ $viewingQuote->phone }}
+                                    </span>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <button wire:click="toggleArchive({{ $viewingQuote->id }})" class="w-8 h-8 flex items-center justify-center border border-gray-800 bg-[#0b0f19] rounded-md hover:bg-gray-800 hover:text-amber-500 transition-colors {{ $viewingQuote->is_archived ? 'text-amber-500' : 'text-gray-400' }}" title="Arsipkan">
+                                <i class="fas fa-archive text-xs"></i>
+                            </button>
+                            <button wire:click="confirmDeleteQuote({{ $viewingQuote->id }})" class="w-8 h-8 flex items-center justify-center border border-red-900/40 bg-red-950/20 text-red-400 rounded-md hover:bg-red-600 hover:text-white transition-colors" title="Hapus">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="flex flex-wrap items-center gap-2.5 shrink-0">
-                        <div class="relative">
-                            <select wire:change="updateStatus({{ $viewingQuote->id }}, $event.target.value)" class="custom-select h-10 bg-[#0b0f19] border border-gray-700 hover:border-gray-600 text-gray-200 text-xs font-semibold rounded-lg pl-3.5 pr-9 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 cursor-pointer outline-none transition-colors">
-                                <option value="new" {{ $viewingQuote->status == 'new' ? 'selected' : '' }}>Status: New</option>
-                                <option value="processing" {{ $viewingQuote->status == 'processing' ? 'selected' : '' }}>Status: Processing</option>
-                                <option value="approved" {{ $viewingQuote->status == 'approved' ? 'selected' : '' }}>Status: Approved</option>
-                                <option value="finished" {{ $viewingQuote->status == 'finished' ? 'selected' : '' }}>Status: Finished</option>
+
+                    <!-- Bottom Row: Status Dropdown & Convert Button -->
+                    <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-gray-800/60">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400 font-medium">Status Penawaran:</span>
+                            <select wire:change="updateStatus({{ $viewingQuote->id }}, $event.target.value)" class="custom-select h-8 bg-[#0b0f19] border border-gray-700 hover:border-gray-600 text-gray-200 text-xs font-semibold rounded-lg pl-3 pr-8 focus:ring-1 focus:ring-amber-500 focus:border-amber-500 cursor-pointer outline-none transition-colors">
+                                <option value="new" {{ $viewingQuote->status == 'new' ? 'selected' : '' }}>New</option>
+                                <option value="processing" {{ $viewingQuote->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                                <option value="approved" {{ $viewingQuote->status == 'approved' ? 'selected' : '' }}>Approved</option>
+                                <option value="finished" {{ $viewingQuote->status == 'finished' ? 'selected' : '' }}>Finished</option>
                             </select>
                         </div>
-                        
+
                         @if($viewingQuote->status === 'approved')
-                            <button wire:click="confirmConvert({{ $viewingQuote->id }})" class="h-10 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black px-4 rounded-lg text-xs font-extrabold uppercase tracking-wide transition-all shadow-lg shadow-amber-500/20 active:scale-95 flex items-center shrink-0 cursor-pointer">
-                                <i class="fas fa-magic mr-2 text-xs"></i> Convert to Project
+                            <button wire:click="confirmConvert({{ $viewingQuote->id }})" class="h-8 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black px-3.5 rounded-lg text-xs font-extrabold uppercase tracking-wide transition-all shadow-md shadow-amber-500/20 active:scale-95 flex items-center shrink-0 cursor-pointer">
+                                <i class="fas fa-magic mr-1.5 text-xs"></i> Convert to Project
                             </button>
                         @endif
-                        
-                        <div class="flex items-center gap-1.5 border-l border-gray-800 pl-2.5">
-                            <button wire:click="toggleArchive({{ $viewingQuote->id }})" class="w-10 h-10 flex items-center justify-center border border-gray-800 bg-[#0b0f19] rounded-lg hover:bg-gray-800 hover:border-gray-700 transition-colors {{ $viewingQuote->is_archived ? 'text-amber-500' : 'text-gray-400' }}" title="Arsipkan">
-                                <i class="fas fa-archive text-sm"></i>
-                            </button>
-                            
-                            <button wire:click="confirmDeleteQuote({{ $viewingQuote->id }})" class="w-10 h-10 flex items-center justify-center border border-red-900/40 bg-red-950/20 text-red-400 rounded-lg hover:bg-red-600 hover:text-white transition-colors" title="Hapus">
-                                <i class="fas fa-trash-alt text-sm"></i>
-                            </button>
-                        </div>
                     </div>
                 </div>
                 
@@ -104,21 +112,21 @@
                         </div>
                     </div>
                     
-                    <div>
+                    <div class="mb-6">
                         <div class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Pesan Tambahan</div>
-                        <div class="bg-[#0b0f19] p-4 rounded-lg border border-gray-800 text-gray-300 whitespace-pre-wrap leading-relaxed">
-                            {{ $viewingQuote->message ?: 'Tidak ada pesan tambahan.' }}
+                        <div class="p-4 bg-[#0b0f19] border border-gray-800 rounded-xl text-gray-300 text-sm leading-relaxed whitespace-pre-line">
+                            {{ $viewingQuote->message }}
                         </div>
                     </div>
                     
-                    <div class="mt-8 text-xs text-gray-500">
-                        Dikirim pada: {{ $viewingQuote->created_at->format('d M Y, H:i') }}
+                    <div class="text-xs text-gray-600 mt-6 pt-4 border-t border-gray-800/60">
+                        Dikirimpada: {{ $viewingQuote->created_at->format('d M Y, H:i') }}
                     </div>
                 </div>
             @else
-                <div class="flex-1 flex flex-col items-center justify-center text-gray-500">
-                    <i class="fas fa-envelope-open-text text-5xl mb-4 text-gray-700"></i>
-                    <p>Pilih pesan di sebelah kiri untuk membaca detailnya.</p>
+                <div class="h-full flex flex-col items-center justify-center text-gray-500 p-8">
+                    <i class="fas fa-inbox text-5xl mb-4 text-gray-700"></i>
+                    <p class="text-sm">Pilih pesan penawaran di sebelah kiri untuk melihat detail.</p>
                 </div>
             @endif
         </div>
@@ -139,25 +147,25 @@
                 <p class="text-xs text-gray-400 mt-1">Lengkapi data awal untuk memindahkan klien ke Kanban Board.</p>
             </div>
             
-            <div class="p-6 space-y-5">
+            <div class="p-6 space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-300 mb-2">Tanggal Event (Opsional)</label>
-                    <input type="date" wire:model="convertEventDate" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg px-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                    <input type="date" wire:model="convertEventDate" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg px-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow text-sm">
                 </div>
                 
                 <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Total Harga (Rp)</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Total Harga</label>
                         <div class="relative">
-                            <span class="absolute left-4 top-2.5 text-gray-500 font-semibold">Rp</span>
-                            <input type="number" wire:model="convertTotalPrice" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                            <span class="absolute left-3.5 top-2.5 text-gray-500 text-xs font-bold">Rp</span>
+                            <input type="number" wire:model="convertTotalPrice" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-gray-200 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors">
                         </div>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-300 mb-2">Uang Muka / DP (Rp)</label>
+                        <label class="block text-sm font-medium text-gray-300 mb-2">Uang Muka / DP</label>
                         <div class="relative">
-                            <span class="absolute left-4 top-2.5 text-gray-500 font-semibold">Rp</span>
-                            <input type="number" wire:model="convertDpAmount" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-gray-200 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-amber-500 transition-shadow">
+                            <span class="absolute left-3.5 top-2.5 text-gray-500 text-xs font-bold">Rp</span>
+                            <input type="number" wire:model="convertDpAmount" placeholder="0" class="w-full bg-[#0b0f19] border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-gray-200 text-sm focus:outline-none focus:border-amber-500 focus:ring-1 focus:ring-amber-500 transition-colors">
                         </div>
                     </div>
                 </div>
