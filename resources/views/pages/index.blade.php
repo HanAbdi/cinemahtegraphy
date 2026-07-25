@@ -103,11 +103,21 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach($portfolios as $item)
+                @php
+                    $thumbnail = null;
+                    if ($item->image_path) {
+                        $thumbnail = asset('storage/' . $item->image_path);
+                    } elseif ($item->video_url) {
+                        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $item->video_url, $matches)) {
+                            $thumbnail = 'https://img.youtube.com/vi/' . $matches[1] . '/hqdefault.jpg';
+                        }
+                    }
+                @endphp
                 <article
                     class="group bg-[#0f1524] border border-gray-900 rounded-sm overflow-hidden hover:border-gray-800 transition duration-300 flex flex-col h-full shadow-lg">
                     <div class="relative aspect-video bg-black overflow-hidden">
-                        @if($item->image_path)
-                            <img src="{{ Storage::url($item->image_path) }}" alt="{{ $item->title }}"
+                        @if($thumbnail)
+                            <img src="{{ $thumbnail }}" alt="{{ $item->title }}"
                                 class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
                         @else
                             <div class="w-full h-full flex items-center justify-center bg-gray-900">
@@ -146,11 +156,7 @@
                         <p class="text-sm text-gray-400 line-clamp-2 font-light leading-relaxed mb-4">
                             {{ strip_tags($item->description) }}
                         </p>
-<<<<<<< HEAD
-                        <a href="{{ url('/portfolio/' . $item->id) }}"
-=======
                         <a href="{{ route('portfolio.detail', $item->id) }}"
->>>>>>> feature/frontend-ui
                             class="mt-auto text-xs font-semibold uppercase tracking-wider text-gray-300 hover:text-white border-b border-gray-800 hover:border-amber-500 pb-1 self-start transition duration-200">
                             Detail Proyek <i class="fas fa-chevron-right text-[10px] ml-1"></i>
                         </a>

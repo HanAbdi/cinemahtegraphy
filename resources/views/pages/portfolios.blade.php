@@ -34,11 +34,27 @@
 
         <div id="portfolio-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach($allPortfolios as $item)
+                @php
+                    $thumbnail = null;
+                    if ($item->image_path) {
+                        $thumbnail = asset('storage/' . $item->image_path);
+                    } elseif ($item->video_url) {
+                        if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $item->video_url, $matches)) {
+                            $thumbnail = 'https://img.youtube.com/vi/' . $matches[1] . '/hqdefault.jpg';
+                        }
+                    }
+                @endphp
                 <article class="portfolio-item group bg-[#0f1524] border border-gray-900 rounded-sm overflow-hidden hover:border-gray-800 transition duration-300 flex flex-col h-full shadow-lg" data-category="{{ $item->category }}">
                     
                     <div class="relative aspect-video bg-black overflow-hidden">
-                        <img src="{{ $item->image_path ? asset('storage/' . $item->image_path) : asset('assets/img/thumb-1.jpg') }}" alt="{{ $item->title }}"
-                            class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
+                        @if($thumbnail)
+                            <img src="{{ $thumbnail }}" alt="{{ $item->title }}"
+                                class="w-full h-full object-cover group-hover:scale-105 transition duration-500 opacity-80 group-hover:opacity-100">
+                        @else
+                            <div class="w-full h-full flex items-center justify-center bg-gray-900">
+                                <i class="fas fa-film text-4xl text-gray-700"></i>
+                            </div>
+                        @endif
 
                         @if($item->project_scope)
                             <span class="absolute top-4 left-4 {{ $item->tag_scheme === 'B' ? 'bg-blue-500 text-white' : 'bg-amber-500 text-black' }} font-black text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-xs shadow-md z-10">
