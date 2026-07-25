@@ -63,95 +63,96 @@
 <body class="bg-[#0b0f19] text-gray-100 font-sans selection:bg-amber-500 selection:text-black flex h-screen overflow-hidden">
 
     <!-- Sidebar -->
-    <aside class="w-64 bg-[#111827] border-r border-gray-800 flex flex-col justify-between hidden md:flex">
-        <div>
-            <div class="h-16 flex items-center px-6 border-b border-gray-800">
-                <a href="{{ route('admin.dashboard') }}" class="text-xl font-heading font-bold tracking-wider">
-                    <span class="text-white">ADMIN</span><span class="text-amber-500">PANEL</span>
-                </a>
-            </div>
-            
-            <nav class="flex-1 mt-6 px-4 space-y-2">
-                <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
-                    <i class="fas fa-chart-line w-6"></i>
-                    Dashboard
-                </a>
-                
-                @php
-                    $perms = auth()->user()->permissions ?? [];
-                    $isSuper = auth()->user()->role === 'superadmin';
-                @endphp
-
-                @if($isSuper || in_array('portofolio', $perms))
-                <a href="{{ route('admin.portfolios.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.portfolios.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
-                    <i class="fas fa-briefcase w-6"></i>
-                    Portofolio
-                </a>
-                @endif
-
-                @if($isSuper || in_array('penawaran', $perms))
-                @livewire('admin-notification-penawaran', key('badge-penawaran'))
-                
-                <div class="pl-4 space-y-1 mt-1 mb-2">
-                    <a href="{{ route('admin.projects.kanban') }}" class="flex items-center px-4 py-2 text-xs font-medium rounded-lg {{ request()->routeIs('admin.projects.kanban') ? 'bg-amber-500/20 text-amber-500' : 'text-gray-400 hover:text-white transition-colors' }}">
-                        <i class="fas fa-columns w-5"></i>
-                        Kanban Proyek
-                    </a>
-                    <a href="{{ route('admin.projects.calendar') }}" class="flex items-center px-4 py-2 text-xs font-medium rounded-lg {{ request()->routeIs('admin.projects.calendar') ? 'bg-amber-500/20 text-amber-500' : 'text-gray-400 hover:text-white transition-colors' }}">
-                        <i class="fas fa-calendar-alt w-5"></i>
-                        Kalender Jadwal
-                    </a>
-                </div>
-                @endif
-
-                @if($isSuper || in_array('mitra_kerja', $perms))
-                <a href="{{ route('admin.client-logos.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.client-logos.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
-                    <i class="fas fa-handshake w-6"></i>
-                    Mitra Kerja
-                </a>
-                @endif
-
-                @if($isSuper || in_array('ulasan_rating', $perms))
-                <a href="{{ route('admin.testimonials.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.testimonials.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
-                    <i class="fas fa-star w-6"></i>
-                    Ulasan & Rating
-                </a>
-                @endif
-
-                @if($isSuper || in_array('informasi_kantor', $perms))
-                <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.settings.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
-                    <i class="fas fa-building w-6"></i>
-                    Informasi Kantor
-                </a>
-                @endif
-
-                @if($isSuper || in_array('live_chat', $perms))
-                @livewire('admin-notification-chat', key('badge-chat'))
-                @endif
-
-                @if($isSuper)
-                <div class="pt-4 mt-4 border-t border-gray-800">
-                    <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Super Admin</p>
-                    <a href="{{ route('admin.accounts.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.accounts.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
-                        <i class="fas fa-users-cog w-6"></i>
-                        Manajemen Akun
-                    </a>
-                </div>
-                @endif
-
-                <div class="pt-4 mt-4 border-t border-gray-800">
-                    <a href="{{ url('/') }}" target="_blank" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors">
-                        <i class="fas fa-external-link-alt w-6"></i>
-                        Lihat Website
-                    </a>
-                </div>
-            </nav>
+    <aside class="w-64 bg-[#111827] border-r border-gray-800 flex flex-col h-screen shrink-0 hidden md:flex">
+        <!-- Logo Header (Pinned Top) -->
+        <div class="h-16 flex items-center px-6 border-b border-gray-800 shrink-0">
+            <a href="{{ route('admin.dashboard') }}" class="text-xl font-heading font-bold tracking-wider">
+                <span class="text-white">ADMIN</span><span class="text-amber-500">PANEL</span>
+            </a>
         </div>
         
-        <div class="p-4 border-t border-gray-800">
+        <!-- Scrollable Navigation Menu -->
+        <nav class="flex-1 overflow-y-auto px-4 py-6 space-y-2">
+            <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.dashboard') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                <i class="fas fa-chart-line w-6"></i>
+                Dashboard
+            </a>
+            
+            @php
+                $perms = auth()->user()->permissions ?? [];
+                $isSuper = auth()->user()->role === 'superadmin';
+            @endphp
+
+            @if($isSuper || in_array('portofolio', $perms))
+            <a href="{{ route('admin.portfolios.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.portfolios.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                <i class="fas fa-briefcase w-6"></i>
+                Portofolio
+            </a>
+            @endif
+
+            @if($isSuper || in_array('penawaran', $perms))
+            @livewire('admin-notification-penawaran', key('badge-penawaran'))
+            
+            <div class="pl-4 space-y-1 mt-1 mb-2">
+                <a href="{{ route('admin.projects.kanban') }}" class="flex items-center px-4 py-2 text-xs font-medium rounded-lg {{ request()->routeIs('admin.projects.kanban') ? 'bg-amber-500/20 text-amber-500' : 'text-gray-400 hover:text-white transition-colors' }}">
+                    <i class="fas fa-columns w-5"></i>
+                    Kanban Proyek
+                </a>
+                <a href="{{ route('admin.projects.calendar') }}" class="flex items-center px-4 py-2 text-xs font-medium rounded-lg {{ request()->routeIs('admin.projects.calendar') ? 'bg-amber-500/20 text-amber-500' : 'text-gray-400 hover:text-white transition-colors' }}">
+                    <i class="fas fa-calendar-alt w-5"></i>
+                    Kalender Jadwal
+                </a>
+            </div>
+            @endif
+
+            @if($isSuper || in_array('mitra_kerja', $perms))
+            <a href="{{ route('admin.client-logos.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.client-logos.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                <i class="fas fa-handshake w-6"></i>
+                Mitra Kerja
+            </a>
+            @endif
+
+            @if($isSuper || in_array('ulasan_rating', $perms))
+            <a href="{{ route('admin.testimonials.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.testimonials.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                <i class="fas fa-star w-6"></i>
+                Ulasan & Rating
+            </a>
+            @endif
+
+            @if($isSuper || in_array('informasi_kantor', $perms))
+            <a href="{{ route('admin.settings.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.settings.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                <i class="fas fa-building w-6"></i>
+                Informasi Kantor
+            </a>
+            @endif
+
+            @if($isSuper || in_array('live_chat', $perms))
+            @livewire('admin-notification-chat', key('badge-chat'))
+            @endif
+
+            @if($isSuper)
+            <div class="pt-4 mt-4 border-t border-gray-800">
+                <p class="px-4 text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Super Admin</p>
+                <a href="{{ route('admin.accounts.index') }}" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg {{ request()->routeIs('admin.accounts.*') ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/20' : 'text-gray-400 hover:bg-gray-800 hover:text-white transition-colors' }}">
+                    <i class="fas fa-users-cog w-6"></i>
+                    Manajemen Akun
+                </a>
+            </div>
+            @endif
+
+            <div class="pt-4 mt-4 border-t border-gray-800">
+                <a href="{{ url('/') }}" target="_blank" class="flex items-center px-4 py-3 text-sm font-medium rounded-lg text-gray-400 hover:bg-gray-800 hover:text-white transition-colors">
+                    <i class="fas fa-external-link-alt w-6"></i>
+                    Lihat Website
+                </a>
+            </div>
+        </nav>
+        
+        <!-- Logout Button (Pinned Bottom) -->
+        <div class="p-4 border-t border-gray-800 shrink-0">
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
-                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg transition-colors">
+                <button type="submit" class="w-full flex items-center gap-3 px-4 py-3 text-red-400 hover:bg-red-500/10 hover:text-red-300 rounded-lg transition-colors cursor-pointer">
                     <i class="fas fa-sign-out-alt w-5"></i>
                     <span>Logout</span>
                 </button>
