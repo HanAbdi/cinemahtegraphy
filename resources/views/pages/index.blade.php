@@ -19,7 +19,7 @@
                 Video Production House
             </span>
             <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mt-6 mb-6 leading-none uppercase">
-                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Cinematic</span> Ondimen.
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Cinematic</span> Ondiman.
             </h1>
             <p class="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">
                 CINEMAHTEGRAPHY menghadirkan solusi pembuatan video corporate elegan berstandar industri nasional dengan
