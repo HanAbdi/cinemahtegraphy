@@ -31,7 +31,7 @@
                     </button>
 
                     <div class="faq-content max-h-0 opacity-0 transition-all duration-300 ease-in-out bg-[#0c111d]">
-                        <div class="p-6 text-xs sm:text-sm text-gray-400 font-light leading-relaxed border-t border-gray-900/40">
+                        <div class="p-6 text-sm sm:text-base text-gray-300 font-normal leading-relaxed border-t border-gray-900/40">
                             {{ $item['answer'] }}
                         </div>
                     </div>
