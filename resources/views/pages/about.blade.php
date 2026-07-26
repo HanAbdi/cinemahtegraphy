@@ -20,11 +20,10 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-24">
-            <div class="relative group aspect-[4/3] bg-gray-950 rounded-sm overflow-hidden border border-gray-900 shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?auto=format&fit=crop&w=1000&q=80" 
+            <div class="relative group aspect-square bg-[#0f1524] rounded-sm overflow-hidden border border-gray-800 shadow-2xl flex items-center justify-center">
+                <img src="{{ asset('assets/img/about.jpeg') }}" 
                      alt="Anril Film Production Crew" 
-                     class="w-full h-full object-cover opacity-80 group-hover:scale-102 transition duration-700">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-transparent to-transparent"></div>
+                     class="w-full h-full object-contain group-hover:scale-102 transition duration-700">
             </div>
 
             <div class="space-y-6">

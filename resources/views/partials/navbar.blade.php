@@ -4,7 +4,7 @@
         <div class="flex items-center justify-between h-20">
             <div class="flex-shrink-0">
                 <a href="#" class="text-2xl font-black tracking-widest text-white">
-                    CINEMAH<span class="text-amber-500">TEGRAPHY</span>
+                    CINEMAH<span class="text-amber-500">TE</span>
                 </a>
             </div>
             <div class="hidden md:block">
