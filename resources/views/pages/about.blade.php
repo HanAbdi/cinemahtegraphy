@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tentang Kami | CINEMAHTEGRAPHY')
+@section('title', 'Tentang Kami | CINEMAHTE')
 
 @section('content')
 <section class="bg-[#0b0f19] text-gray-100 min-h-screen pt-32 pb-20">
@@ -15,7 +15,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Lewat Cerita Visual</span>
             </h1>
             <p class="text-base sm:text-lg text-gray-400 font-light leading-relaxed">
-                CINEMAHTEGRAPHY hadir sebagai production house spesialis pembuatan video corporate profesional nasional yang mengedepankan kualitas sinematik papan atas dengan efisiensi biaya.
+                CINEMAHTE hadir sebagai production house spesialis pembuatan video corporate profesional nasional yang mengedepankan kualitas sinematik papan atas dengan efisiensi biaya.
             </p>
         </div>
 

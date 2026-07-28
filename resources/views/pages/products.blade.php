@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Produk Video Sinematik | CINEMAHTEGRAPHY')
+@section('title', 'Produk Video Sinematik | CINEMAHTE')
 
 @section('content')
 <section class="bg-[#0b0f19] text-gray-100 min-h-screen pt-32 pb-24">

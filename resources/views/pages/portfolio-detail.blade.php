@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', $portfolio->title . ' | CINEMAHTEGRAPHY Showcase')
+@section('title', $portfolio->title . ' | CINEMAHTE Showcase')
 
 @section('content')
 <article class="pt-32 pb-24 bg-[#0b0f19]">

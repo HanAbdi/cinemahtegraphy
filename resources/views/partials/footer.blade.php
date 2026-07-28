@@ -1,8 +1,8 @@
 <footer class="bg-[#060910] border-t border-gray-900 pt-20 pb-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
         <div>
-            <span class="text-xl font-black tracking-widest text-white block mb-6">CINEMAH<span
-                    class="text-amber-500">TEGRAPHY</span></span>
+            <span class="text-xl font-black tracking-widest text-white block mb-6">CINE<span
+                    class="text-amber-500">MAHTE</span></span>
             <p class="text-sm text-gray-400 font-light leading-relaxed mb-6">
                 Membantu perusahaan mengukir identitas visual murni melalui tayangan sinematik yang bernilai tinggi.
             </p>
@@ -39,7 +39,7 @@
 
     <div
         class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 border-t border-gray-900 flex flex-col sm:flex-row items-center justify-between text-xs text-gray-500">
-        <p>&copy; PT. CINEMAHTEGRAPHY | All Rights Reserved.</p>
+        <p>&copy; PT. CINEMAHTE | All Rights Reserved.</p>
     </div>
 </footer>
 

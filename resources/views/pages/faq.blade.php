@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Frequently Asked Questions | CINEMAHTEGRAPHY')
+@section('title', 'Frequently Asked Questions | CINEMAHTE')
 
 @section('content')
 <section class="bg-[#0b0f19] text-gray-100 min-h-screen pt-32 pb-24">

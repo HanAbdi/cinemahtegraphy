@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'CINEMAHTEGRAPHY | Home Cinematic Video Portfolio')
+@section('title', 'CINEMAHTE | Home Cinematic Video Portfolio')
 
 @section('content')
 
@@ -22,7 +22,7 @@
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-amber-600">Cinematic</span> On Demand.
             </h1>
             <p class="text-base sm:text-xl text-gray-400 max-w-2xl mx-auto mb-10 font-light">
-                CINEMAHTEGRAPHY menghadirkan solusi pembuatan video corporate elegan berstandar industri nasional dengan
+                CINEMAHTE menghadirkan solusi pembuatan video corporate elegan berstandar industri nasional dengan
                 efisiensi biaya optimal.
             </p>
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -229,7 +229,7 @@
                                     @endif
                                     <div>
                                         <h4 class="text-sm font-bold text-white leading-tight">{{ $item->client_name }}</h4>
-                                        <p class="text-xs text-gray-500 font-light mt-0.5">{{ $item->client_company ?: 'Klien Cinemahtegraphy' }}</p>
+                                        <p class="text-xs text-gray-500 font-light mt-0.5">{{ $item->client_company ?: 'Klien CinemahTe' }}</p>
                                     </div>
                                 </div>
                             </div>
